@@ -1,37 +1,25 @@
 import { CustomArticle } from "./Article.js";
+import { ENV } from '../../../../config/env.js';
 
 /** Créer des pages à partir des données */
 export class CustomPage extends CustomArticle {
-    etat = false; // Vérifier si du contenu est déjà écrit dans la page
-    categorie; // La catégorie avec toutes les données dynamiques dedans
+    contenu; // La catégorie avec toutes les données dynamiques dedans
     articles = []; // La liste des articles de la page
     style; // Le style a appliquer à une page
-    target; // L'élément HTML dans lequel on écrit
     cols = []; // Ls colonnes à ajouter aux pages
 
-    constructor(cat, alias) {
+    constructor(contenu) {
         super();
-        this.categorie = cat;
-        this.alias = alias;
-        this.target = document.getElementById(alias);
-        this.cols = [];
-        this.getEtat(); // Réécrire le contenu, ou non
-    }
-    /** Obtenir l'état de la page pour savoir s'il faut la réécrire le contenu */
-    getEtat() {
-        this.target.querySelectorAll('section').length > 0 ? this.etat = true : this.etat = false;
+        this.contenu = contenu;
+        this.cols.push(document.querySelector('#contenu > section:nth-child(1)'));
+        this.cols.push(document.querySelector('#contenu > section:nth-child(2)'));
+        console.log(this.cols);
     }
     /** Créer les articles de la page */
-    setArticles(localTarget, articles, paire) {
-        localTarget.innerHtml = '';
-        if (paire != undefined) {
-            this.triArticles(paire);
-        }
-        else {
-            this.articles = this.categorie.Articles.items;
-        }
-        // Afficher les articles dans la page
-        this.listeArticles(localTarget, articles);
+    setArticles(articles, el) {
+        el.innerHTML = '';
+        console.log(el);
+        articles.forEach(a => el.appendChild(this.setArticle(a.attributes)));
     }
     /** Trier les articles */
     triArticles(paire) {
@@ -42,7 +30,7 @@ export class CustomPage extends CustomArticle {
         };
     }
     /** Afficher la liste des articles sélectionnés */
-    listeArticles(localTarget, articles) {
+    listeArticles(articles) {
         articles.forEach(a => {
             // Créer des articles complets ou juste l'intro en fonction de la mise en page
             this.categorie.MiseEnPage.type != 'CustomPortfolio' ? localTarget.appendChild(this.setArticle(a)) : localTarget.appendChild(this.setRef(a));
@@ -50,36 +38,19 @@ export class CustomPage extends CustomArticle {
     }
     /** LES SECTIONS */
     /** Ecrire le contenu sur la gauche de la colonne */
-    setCat() {
-        if (this.etat) return;
-        let descr;
-        // Créer à la colonne avec la catégorie
-        this.cols[0] = this.setEl('section');
-        if (this.categorie.image) this.setAttr(this.cols[0], { name: 'style', value: `background-image:url('${this.categorie.image}');` });
-
-        let art = this.setEl('article');
-        let titre = this.setText('h1', this.categorie.titre);
-        art.appendChild(titre);
-
-        if (this.categorie.accroche) {
-            let bloc = this.setHtml('h2', this.categorie.accroche);
-            art.appendChild(bloc);
-        };
-        if (this.categorie.description) {
-            descr = this.setHtml('div', this.md.makeHtml(this.categorie.description));
-            art.appendChild(descr);
-        };
-        this.cols[0].appendChild(art);
-
-        this.target.appendChild(this.cols[0]);
-        // Céer la colonne avec les articles
-        this.setCol(this.categorie.Articles.items);
-        // Créer un menu dans sous la catégorie
-        this.setMenu(descr);
+    setCat(cat, el, ...attr) {
+        el.innerHTML = '';
+        const art = this.setEl('article', attr);
+        art.classList.add('categorie');
+        if(cat.Titre) art.appendChild(this.setText('h1', cat.Titre));
+        
+        if(cat.Media.data) art.appendChild(this.setImg(ENV.servurl + cat.Media.data.attributes.url));
+        if (cat.Description) art.appendChild(this.setText('p', cat.Description));
+        
+        el.appendChild(art);
     }
     /** Définir la mise en page avec un nombre de colonnes */
     setCol(content) {
-        if (this.etat) return;
         this.cols.push(this.setEl('section'));
         this.target.appendChild(this.cols[this.cols.length - 1]);
         // Créer les articles du blog

@@ -10,10 +10,6 @@ export class ServiceStore {
   constructor(scope){
     this.scope = scope;
   }
-  // Objet partagé entre les contrôleurs pour enregistrer les différents états
-  storage = {
-    
-  };
   // Créer un singleton pour les données
   static getInstance() {
     if (this.instance === undefined) {
@@ -23,7 +19,6 @@ export class ServiceStore {
   }
   /** Trier les données pour créer des menus */
   setMenus(data){
-    console.log(data);
     const menus = {};
     data.forEach(d => {
       d = d.attributes;
@@ -33,8 +28,7 @@ export class ServiceStore {
       }
       menus[m].push(d);
     });
-    this._menus = menus;
-    console.log(this._menus);
+    ServiceStore._menus = menus;
   }
   /** Récuperer un menu depuis son ID ou son Titre */
   getMenu(id){

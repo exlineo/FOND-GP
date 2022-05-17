@@ -1,6 +1,6 @@
 import { CustomPage } from "./DOM/Page.js";
 
-export class CustomCategorie extends CustomPage {
+export class CustomCategorieMenu extends CustomPage {
 
     constructor(cat){
         super(cat);

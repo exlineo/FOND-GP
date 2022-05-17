@@ -31,19 +31,23 @@ main{
     display:flex;
     flex-flow:column nowrap;
     width:90vw;
-    height:100hv;
+    height:100vh;
     overflow-x:hidden;
     overflow-y: auto;
+    box-sizing:border-box;
+    margin:auto;
+}
+main > section > section{
+  flex-flow: column nowrap;
 }
 h1{
   font-weight:100;
-  font-size:60px;
-  margin:50px 0 0;
+  font-size:42px;
   font-family: 'Raleway', sans-serif;
 }
 h2{
   font-weight:100;
-  font-size:36px;
+  font-size:32px;
   font-family: 'Raleway', sans-serif;
 }
 h3{
@@ -66,17 +70,66 @@ h6{
 }
 a {
     cursor: pointer;
-    color:rgba(255,255,255,0.8);
     font-weight:normal;
+    color:var(--p);
     transition:all .4s ease;
+    text-decoration: none;
 }
 a:hover{
     color:var(--t);
-    transform: scale(1.1);
+    /* transform: scale(1.1); */
 }
-main{
-    width:100vw;
-    box-sizing:border-box;
+nav{
+  width: max-content;
+  border: 1px solid var(--t);
+}
+nav, nav > ul{
+  display:flex;
+  flex-flow:row nowrap;
+  margin:auto;
+}
+nav > ul > li{
+  list-style: none;
+}
+nav a{
+  display:block;
+  padding:10px 0;
+  margin:10px -1px;
+  text-transform: uppercase;
+}
+nav a::before{
+  content:'-';
+  margin-right:16px;
+}
+nav a::after{
+  content:'-';
+  margin-left:14px;
+}
+nav a::before:hover{
+  content:'-';
+  margin-right:16px;
+}
+nav a:hover::after{
+  content:'-';
+  margin-left:14px;
+}
+main > header > nav{
+  margin-top:-2px;
+}
+main > header > nav > ul{
+  padding:10px 60px;
+  border-bottom: 2px solid var(--s);
+  margin-bottom:2px;
+}
+main > footer {
+  font-size: 11px;
+  margin-bottom:-2px;
+}
+main > footer > nav > ul{
+  padding:5px 40px;
+}
+main > header > nav > ul > li{
+  list-style: none;
 }
 section{
     display:flex;
@@ -86,6 +139,8 @@ section{
 article{
   position : relative;
   display:flex;
+  padding:10px 30px;
+  flex-flow:column nowrap;
 }
 article > div{
   padding:0;
@@ -106,13 +161,16 @@ article > div > label{
   background-color:orange;
   font-style: italic;
 }
-main > section{
-  width:50%;
-  height:100%;
-  flex-flow:column wrap;
+#contenu{
+  width: 100%;
+  height:calc(100vh - 60px);
 }
-main > section > section:nth-child(1){
-  background:0% 100% no-repeat;
+#contenu > section{
+  width:50vw;
+  height:100%;
+}
+#contenu > section:nth-child(1){
+  border-right:1px double var(--p);
 }
 p{
   padding-left:50px;
@@ -350,7 +408,20 @@ button a:hover{
     display:block;
     opacity:1;
   }
-/* CLASSES DES PAGES */
+/* CLASSES PERSONNALISEES */
+.blog-categorie > section:nth-child(2){
+  justify-content: center;
+}
+.blog-categorie article.categorie{
+  text-align:right;
+}
+article.categorie > img{
+  max-width:400px;
+  align-self: flex-end;
+}
+.droite{
+  text-align:right;
+}
 /* BLOG (articles en enfilade et données de la catégorie */
 .blog > section, .blog-double > section {
   flex-flow:column nowrap;
@@ -369,126 +440,7 @@ button a:hover{
 .blog-double {
 
 }
-#prestations > section:nth-child(1) ul li{
-  list-style: none;
-  margin:20px 0;
-}
-#prestations > section:nth-child(1) a{
-  text-decoration:none;
-  font-weight:300;
-}
-#prestations > section:nth-child(1) a:hover{
-  text-decoration:double;
-  font-weight:900;
-}
-#references {
-  flex-flow: row nowrap;
-}
-#references > section{
-  width:100vw;
-  flex-flow: row wrap;
-  margin:0;
-  padding:0;
-}
-#references > div.img {    
-    display: inline-block;
-    width:calc(100vw / 5);
-    position:relative;
-    /* margin-bottom: 7px; */
-}
-#references figure{
-    background-size: cover;
-}
-#references h2{
-  font-size:18px;
-}
-#references h3{
-  font-size:14px;
-}
-#references > section > article{
-  max-width: 300px;
-  margin:0 auto;
-  padding:0;
-  position:relative;
-  overflow:hidden;
-}
-#references article > div {
-  width:100%;
-  padding:0 8px;
-  position:absolute;
-  bottom:-50px;
-  background-color:rgba(0,0,0,.5);
-  box-sizing: border-box;
-  transition:all .4s ease;
-}
-#references article:hover > div {
-  bottom:0;
-  background-color:rgba(0,0,0,.7);
-  box-sizing: border-box;
-}
-#map{
-  height:350px;
-  width:100%;
-  padding-left:-5%;
-}
-/* DEGRADES */
-.bleuvert{
-  background : var(--bleuvert);
-  /* background: linear-gradient(60deg, rgba(21,153,87,1) 12%, rgba(21,87,153,1) 100%); */
-}
-.rougeorange{
-  /* background: rgb(156,36,32); */
-  background : var(--rougeorange, 'background', rgb(156,36,32));
-  /* background: linear-gradient(60deg, rgba(163,39,36,1) 12%, rgba(239,59,54,1) 100%); */
-}
-.bleubleuclair{
-  /* background: rgb(0,0,70); */
-  background : var(--bleubleuclair, 'background', rgb(0,0,70));
-  /* background: linear-gradient(60deg, rgba(0,0,70,1) 12%, rgba(28,181,224,1) 100%); */
-}
-.bleuazur{
-  background: rgb(0,121,145);
-  background: linear-gradient(60deg, rgba(0,121,145,1) 12%, rgba(120,255,214,1) 100%);
-}
-.orangejaune{
-  background: rgb(242,153,74);
-  background: linear-gradient(60deg, rgba(242,153,74,1) 12%, rgba(242,201,76,1) 100%);
-}
-.noirrouge{
-  background: rgb(0,0,0);
-  background: linear-gradient(60deg, rgba(0,0,0,1) 12%, rgba(235,87,87,1) 100%);
-}
-.orangeorange{
-  background: rgb(228,77,38);
-  background: linear-gradient(60deg, rgba(228,77,38,1) 0%, rgba(241,101,41,1) 44%, rgba(228,77,38,1) 100%);
-}
-.pourpre{
-  background: rgb(32,0,44);
-  background: linear-gradient(60deg, rgba(32,0,44,1) 0%, rgba(160,135,170,1) 100%);
-}
-.pourpre::-webkit-scrollbar-thumb {
-  background-color: rgb(32,0,44);
-}
-.pourprerouge{
-  background: rgb(195,55,100);
-  background: linear-gradient(60deg, rgba(195,55,100,1) 0%, rgba(32,0,44,1) 77%);
-}
-.vertbleugris{
-  background: rgb(52,232,158);
-  background: linear-gradient(60deg, rgba(52,232,158,1) 0%, rgba(15,52,100,1) 77%);
-}
-.saumon{
-  background: rgb(214,109,117);
-  background: linear-gradient(60deg, rgba(240,130,110,1) 0%, rgba(180,64,92,1) 100%);
-}
-.vertdeau{
-  background: rgb(67,167,134);
-  background: linear-gradient(60deg, rgba(67,167,134,1) 12%, rgba(189,255,243,1) 100%);
-}
-.rougeviolet{
-  background: rgb(192,57,43);
-  background: linear-gradient(60deg, rgba(192,57,43,1) 0%, rgba(80,48,93,1) 88%);
-}
+
 /* POPUP CROIX DE LA POPUP */
 #popup{
   position:fixed;

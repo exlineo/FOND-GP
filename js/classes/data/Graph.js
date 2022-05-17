@@ -32,7 +32,7 @@ export class Graph extends QL {
         }
     }
     /** Récupérer les données des menus, catégories et articles */
-    getMenus() {
+    async getMenus() {
         fetch(ENV.graphurl, {
             method: 'POST',
             body: this.reqAll(),
@@ -42,6 +42,7 @@ export class Graph extends QL {
         }).then(d => {
             // this.setCategories(d.data.categories.data);
             this.s.setMenus(d.data.menus.data);
+            this.menu = new Menu();
             // Enregistrer les données
             // this.storeData('menus', this.listeCategories);
         })

@@ -8,7 +8,7 @@ export class QL {
   reqAll() {
     return JSON.stringify({
       query: `{
-        menus{
+        menus(pagination: { page: 1, pageSize: 20 }){
           data{
             id
             attributes{
