@@ -105,13 +105,16 @@ nav a::after{
   content:'-';
   margin-left:14px;
 }
-nav a::before:hover{
-  content:'-';
-  margin-right:16px;
+nav li > ul{
+  opacity:0;
+  margin-top:-100px;
+  pointer-events: none;
+  transition: all .3s ease;
 }
-nav a:hover::after{
-  content:'-';
-  margin-left:14px;
+nav li:hover > ul{
+  opacity:1;
+  margin-top:0;
+  pointer-events: all;
 }
 main > header > nav{
   margin-top:-2px;

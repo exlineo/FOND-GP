@@ -13,7 +13,6 @@ export class CustomPage extends CustomArticle {
         this.contenu = contenu;
         this.cols.push(document.querySelector('#contenu > section:nth-child(1)'));
         this.cols.push(document.querySelector('#contenu > section:nth-child(2)'));
-        console.log(this.cols);
     }
     /** Créer les articles de la page */
     setArticles(articles, el) {

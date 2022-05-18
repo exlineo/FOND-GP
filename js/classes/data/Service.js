@@ -30,6 +30,16 @@ export class ServiceStore {
     });
     ServiceStore._menus = menus;
   }
+  /** Créer les sous menus */
+  triMenus(menu){
+    menu.forEach(m => {
+        if(m.Parent.data) {
+            const parent = menu[m.Parent.data.id - 1];
+            if (!parent['enfants']) parent['enfants'] = [];
+            parent.enfants.push(m);
+        };
+    })
+}
   /** Récuperer un menu depuis son ID ou son Titre */
   getMenu(id){
 

@@ -22,7 +22,7 @@ export class Menu extends CustomDOM {
     };
     /** Ecrire les menus dans le DOM */
     setStructureMenus() {
-        this.creeMenu(this.principalEl, ServiceStore._menus.principal);
+        this.creeMenu(this.principalEl, this.triMenus(ServiceStore._menus.principal));
         this.creeMenu(this.piedEl, ServiceStore._menus.pied);
         // Créer la page par défaut
         this.router.setPage(ServiceStore._menus.principal[0]);
@@ -57,6 +57,7 @@ export class Menu extends CustomDOM {
      * @param {Array<Menu>} sm Liste des liens à afficher dans le menu
      */
     creeMenu(el, sm) {
+        console.log(sm);
         const ul = document.createElement('ul');
         sm.forEach(m => {
             if (!m.Parent.data) {
@@ -74,12 +75,25 @@ export class Menu extends CustomDOM {
                 });
                 li.appendChild(a);
                 ul.appendChild(li);
+                // Créer les sous menus
+                if(m['enfants']){
+                    this.creeMenu(li, m.enfants)
+                }
             }
         });
         el.appendChild(ul);
     }
     /** Créer les sous menus */
-    creeSousMenu(){
-
+    triMenus(menu){
+        menu.forEach((m, i) => {
+            if(m.Parent.data) {
+                const parent = menu[m.Parent.data.id - 1];
+                if (!parent['enfants']) parent['enfants'] = [];
+                parent.enfants.push(m);
+                delete menu[i];
+            };
+        });
+        return menu;
     }
+
 }
