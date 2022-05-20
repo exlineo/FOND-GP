@@ -57,6 +57,16 @@ export class CustomRouter {
             classe: CustomPortfolio,
             instance: null
     }];
+    constructor(){
+        this.initRoute(); // Initialiser la page au démarrage
+    }
+    /** La route lorsqu'on arrive sur la page */
+    initRoute(){
+        const path = new URL(window.location.href).pathname;
+        const adr = ServiceStore._menus.principal.filter(l => l.Lien.Url == path);
+        // Créer la page par défaut
+        this.setPage(adr[0]);
+    }
     /** Créer la page avec les contenus
     * @param {Lien} lien Objet contenant toutes les informations du lien et de la page
     */

@@ -24,8 +24,6 @@ export class Menu extends CustomDOM {
     setStructureMenus() {
         this.creeMenu(this.principalEl, this.triMenus(ServiceStore._menus.principal));
         this.creeMenu(this.piedEl, ServiceStore._menus.pied);
-        // Créer la page par défaut
-        this.router.setPage(ServiceStore._menus.principal[0]);
     };
     /** Etablir les événements de clic */
     setEvents() {

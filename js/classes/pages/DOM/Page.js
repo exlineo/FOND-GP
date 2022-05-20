@@ -42,7 +42,7 @@ export class CustomPage extends CustomArticle {
         art.classList.add('categorie');
         if(cat.Titre) art.appendChild(this.setText('h1', cat.Titre));
         
-        if(cat.Media.data) art.appendChild(this.setImg(ENV.servurl + cat.Media.data.attributes.url));
+        if(cat.Media.data) art.appendChild(this.setFigure(ENV.servurl + cat.Media.data.attributes.url));
         if (cat.Description) art.appendChild(this.setHtml('div', cat.Description));
         
         el.appendChild(art);
@@ -55,32 +55,30 @@ export class CustomPage extends CustomArticle {
         // this.setContent(this.cols[this.cols.length-1], content);
         this.listeArticles(this.cols[this.cols.length - 1], content);
     }
-    /** Afficher des articles dans une colonne */
-    // setContent(el, content) {
-    //     this.listeArticles(el, content);
-    // }
-    /** Ecrire un menu si des liens sont détectés */
-    setMenu(el) {
-        try {
-            let liens = el.querySelectorAll('a');
-            if (liens.length > 0) {
-                for (let l of liens) {
-                    // let h2 = this.cols[1].querySelectorAll('h2');
-                    // liens.map(l => {
-                    let tmp = l.getAttribute('href').substr(1, l.getAttribute('href').length)
-                    l.setAttribute('data-lien', tmp);
-                    l.setAttribute('data-y', document.getElementById(tmp).getBoundingClientRect().y);
-                    l.removeAttribute('href');
-                    // Gérer les clic sur le lien
-                    l.addEventListener('click', (e) => {
-                        let y = e.target.dataset.y - this.cols[1].getBoundingClientRect().y;
-                        this.cols[1].scrollTo({
-                            top: y,
-                            behavior: 'smooth'
-                        });
-                    });
-                };
-            }
-        } catch (er) { console.log(er) };
+    /** Créer un sous menu */
+    setSousMenu(menu, index=0){
+        console.log(menu);
+        this.cols[1].innerHTML = '';
+        const nav = document.createElement('nav');
+        const ul = document.createElement('ul');
+        nav.className = 'sous-menu';
+        menu.forEach((m, i) => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.textContent = m.Lien.Titre;
+            a.addEventListener('click', (e, i)=>{
+                console.log(e.target);
+                this.setSousMenu(menu, i);
+            });
+            li.appendChild(a);
+            ul.appendChild(li);
+        });
+
+        nav.appendChild(ul);
+        // Ecrire les articles
+        this.setArticles(menu[index].Categorie.data?.attributes.Articles.data, this.cols[1]);
+
+        this.cols[1].prepend(nav);
+        // this.setArticles(cat.Articles.data, this.cols[1]);
     }
 }
