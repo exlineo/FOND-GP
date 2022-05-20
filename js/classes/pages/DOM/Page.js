@@ -17,7 +17,6 @@ export class CustomPage extends CustomArticle {
     /** Créer les articles de la page */
     setArticles(articles, el) {
         el.innerHTML = '';
-        console.log(el);
         articles.forEach(a => el.appendChild(this.setArticle(a.attributes)));
     }
     /** Trier les articles */
@@ -44,7 +43,7 @@ export class CustomPage extends CustomArticle {
         if(cat.Titre) art.appendChild(this.setText('h1', cat.Titre));
         
         if(cat.Media.data) art.appendChild(this.setImg(ENV.servurl + cat.Media.data.attributes.url));
-        if (cat.Description) art.appendChild(this.setText('p', cat.Description));
+        if (cat.Description) art.appendChild(this.setHtml('div', cat.Description));
         
         el.appendChild(art);
     }

@@ -6,12 +6,10 @@ export class CustomArticle extends CustomDOM {
 
     constructor() {
         super();
-        this.md = new showdown.Converter();
     };
 
     /** Créer un article */
     setArticle(a) {
-        console.log(a);
         let article = this.setEl('article');
         let obj = {}; // Objet d'initialisation
 
@@ -19,7 +17,7 @@ export class CustomArticle extends CustomDOM {
         if (a.Titre) { obj.titre = this.setText('h2', a.Titre) };
         if (a.Intro) { obj.intro = this.setText('p', a.Intro) };
         if (a.MediaContenu.data) { obj.imageA = this.setFigure(a.MediaContenu.data.attributes.url) };
-        if (a.Contenu) { obj.contenu = this.setHtml('div', this.md.makeHtml(a.Contenu)) };
+        if (a.Contenu) { obj.contenu = this.setHtml('div', a.Contenu) };
 
         for (let i in obj) {
             article.appendChild(obj[i]);
@@ -61,7 +59,7 @@ export class CustomArticle extends CustomDOM {
         if (a.accroche) { obj.accroche = this.setText('h3', a.accroche) };
         if (a.imageI) { obj.imageI = this.setFigure(a.imageI) };
         if (a.intro) { obj.intro = this.setText('p', a.intro) };
-        if (a.contenu) { obj.contenu = this.setHtml('div', this.md.makeHtml(a.contenu)) };
+        if (a.contenu) { obj.contenu = this.setHtml('div', a.contenu) };
         if (a.imageC) { obj.imageC = this.setImg(a.imageC) };
         if (a.lien) { obj.lien = this.setBouton(a.lien) };
 

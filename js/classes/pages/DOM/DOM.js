@@ -3,6 +3,7 @@ import { CustomPopup } from './Popup.js';
 export class CustomDOM extends CustomPopup {
     constructor() {
         super();
+        this.md = new showdown.Converter();
     }
     /** Créer un élément HTML : el = le nom de l'élément, target = l'id de l'élément cible, ...attr = la liste des éléments */
     setEl(el, ...attr) {
@@ -24,7 +25,7 @@ export class CustomDOM extends CustomPopup {
     /** Ecrire un élément contenant du HTML */
     setHtml(el, html=null, ...attr){
         let e = document.createElement(el);
-        if(html) e.innerHTML = html;
+        if(html) e.innerHTML = this.md.makeHtml(html);
         if (attr) {
             this.setAttr(e, ...attr);
         };

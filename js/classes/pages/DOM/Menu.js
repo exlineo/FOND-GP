@@ -57,36 +57,37 @@ export class Menu extends CustomDOM {
      * @param {Array<Menu>} sm Liste des liens à afficher dans le menu
      */
     creeMenu(el, sm) {
-        console.log(sm);
         const ul = document.createElement('ul');
         sm.forEach(m => {
-            if (!m.Parent.data) {
-                let li = document.createElement('li');
-                let a = document.createElement('a');
-                a.textContent = m.Lien.Titre;
-                if (m.Lien.Cible) a.setAttribute('target', m.Lien.Cible);
-                a.setAttribute('href', m.Lien.Url);
-                a.addEventListener('click', (e) => {
-                    if (m.Lien.Cible != '_blank') {
-                        e.preventDefault();
+            let li = document.createElement('li');
+            let a = document.createElement('a');
+            a.textContent = m.Lien.Titre;
+            if (m.Lien.Cible) a.setAttribute('target', m.Lien.Cible);
+            a.setAttribute('href', m.Lien.Url);
+            a.addEventListener('click', (e) => {
+                if (m.Lien.Cible != '_blank') {
+                    e.preventDefault();
+                    if (m.Template.data?.attributes) {
+                        // this.animationInit();
                         this.router.setPage(m);
                         history.pushState({ key: m.Lien.Url }, '', m.Lien.Url);
+                        // this.animationPage();
                     }
-                });
-                li.appendChild(a);
-                ul.appendChild(li);
-                // Créer les sous menus
-                if(m['enfants']){
-                    this.creeMenu(li, m.enfants)
                 }
+            });
+            li.appendChild(a);
+            ul.appendChild(li);
+            // Créer les sous menus
+            if (m['enfants']) {
+                this.creeMenu(li, m.enfants)
             }
         });
         el.appendChild(ul);
     }
     /** Créer les sous menus */
-    triMenus(menu){
+    triMenus(menu) {
         menu.forEach((m, i) => {
-            if(m.Parent.data) {
+            if (m.Parent.data) {
                 const parent = menu[m.Parent.data.id - 1];
                 if (!parent['enfants']) parent['enfants'] = [];
                 parent.enfants.push(m);
@@ -95,5 +96,18 @@ export class Menu extends CustomDOM {
         });
         return menu;
     }
-
+    /** Animations */
+    animationInit() {
+        const s = document.querySelectorAll("#contenu > section");
+        // console.log(s);
+        // s[0].className = 'disparait-gauche';
+        // s[1].className = 'disparait-droite';
+        s[0].className = '';
+        s[1].className = '';
+    }
+    animationPage() {
+        const s = document.querySelectorAll("#contenu > section");
+        s[0].className = 'apparait-gauche';
+        s[1].className = 'apparait-droite';
+    }
 }

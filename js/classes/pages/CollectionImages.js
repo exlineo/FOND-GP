@@ -1,6 +1,6 @@
 import { CustomPage } from "./DOM/Page.js";
 
-export class CustomCollectionsImages extends CustomPage {
+export class CustomCollectionImages extends CustomPage {
     cols; // Les cols de la mise en page
 
     constructor(cat, alias){

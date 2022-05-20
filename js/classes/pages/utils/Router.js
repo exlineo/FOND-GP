@@ -1,12 +1,14 @@
 import { CustomBlog } from '../Blog.js';
 import { CustomBlogAlterne } from '../BlogAlterne.js';
-import { CustomCategorie } from '../CustomCategorie.js';
-import { CustomColonnesTriples } from '../ColonnesTriples.js';
+import { CustomCategorie } from '../Categorie.js';
+import { CustomEquipes } from '../Equipes.js';
 import { CustomContact } from '../Contact.js';
 import { CustomPortfolio } from '../Portfolio.js';
-import { CustomCategorieMenu } from '../CustomCategorieMenu.js';
+import { CustomCategorieMenu } from '../CategorieMenu.js';
 
 import { ServiceStore } from '../../data/Service.js';
+import { CustomCollectionImages } from '../CollectionImages.js';
+import { CustomCollectionMixte } from '../CollectionMixte.js';
 
 export class CustomRouter {
     ancre;
@@ -19,31 +21,39 @@ export class CustomRouter {
             instance: null
         },
         {
-            alias: 'CustomBlog',
+            alias: 'blog',
             classe: CustomBlog,
             instance: null
+        }, {
+            alias: 'blogAlterne',
+            classe: CustomBlogAlterne,
+            instance: null
         },{
-            alias: 'CustomCategorie',
+            alias: 'categorie',
             classe: CustomCategorie,
             instance: null
         },{
-            alias: 'CustomCategorieMenu',
+            alias: 'categorieMenu',
             classe: CustomCategorieMenu,
             instance: null
-        }, {
-            alias: 'CustomBlogAlterne',
-            classe: CustomBlogAlterne,
+        },{
+            alias: 'collectionImages',
+            classe: CustomCollectionImages,
+            instance: null
+        },{
+            alias: 'collectionMixte',
+            classe: CustomCollectionMixte,
             instance: null
         }, {
-            alias: 'CustomTriples',
-            classe: CustomColonnesTriples,
+            alias: 'equipes',
+            classe: CustomEquipes,
             instance: null
         }, {
-            alias: 'CustomContact',
+            alias: 'contact',
             classe: CustomContact,
             instance: null
         }, {
-            alias: 'CustomPortfolio',
+            alias: 'portfolio',
             classe: CustomPortfolio,
             instance: null
     }];
@@ -51,9 +61,9 @@ export class CustomRouter {
     * @param {Lien} lien Objet contenant toutes les informations du lien et de la page
     */
     setPage(page){
+        console.log(page);
         this.instances.map(i => {
-            if(!page.Template.data) page.Template.data.attributes.Titre = 'CustomCategorie';
-            if(i.alias == page.Template.data.attributes.Titre) this.instance = new i.classe(page.Categorie.data.attributes, page.Lien.Alias);
+            if(i.alias == page.Template.data?.attributes.Alias | 'categorie') this.instance = new i.classe(page.Categorie.data.attributes, page.Lien.Alias);
         });
     }
     /** Retrouver une classe en fonction du nom du template et inscrire l'instance dedans

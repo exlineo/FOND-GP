@@ -1,6 +1,6 @@
 import { CustomPage } from "./DOM/Page.js";
 
-export class CustomCategorieMenu extends CustomPage {
+export class CustomCategorie extends CustomPage {
 
     constructor(cat){
         super(cat);
@@ -9,6 +9,4 @@ export class CustomCategorieMenu extends CustomPage {
         this.setCat(cat, this.cols[0]);
         this.setArticles(cat.Articles.data, this.cols[1]);
     }
-    /** Créer deux colonnes */
-    
 }

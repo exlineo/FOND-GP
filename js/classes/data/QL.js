@@ -8,7 +8,7 @@ export class QL {
   reqAll() {
     return JSON.stringify({
       query: `{
-        menus(pagination: { page: 1, pageSize: 20 }){
+        menus(pagination: { page: 1, pageSize: 30 }){
           data{
             id
             attributes{
@@ -95,35 +95,36 @@ export class QL {
             }
           }
         }
-              Ordre
-              Rattachement{
-                data{
-                  attributes{
-                    Titre
-                    Alias
-                    Type
-                  } 
-                }
-              }
-              Parent{
-                data{
-                  id
-                }
-              }
-              Template{
-                data{
-                  id
-                  attributes{
-                    Titre
-                  }
-                }
-              }
+        Ordre
+        Rattachement{
+          data{
+            attributes{
+              Titre
+              Alias
+              Type
+            } 
+          }
+        }
+        Parent{
+          data{
+            id
+          }
+        }
+        Template{
+          data{
+            id
+            attributes{
+              Titre
+              Alias
             }
           }
         }
-      }`
-    })
+      }
+    }
   }
+}`
+  })
+}
 
   /** Requete pour récupérer la liste des articles */
   reqArticles() {
