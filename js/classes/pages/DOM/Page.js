@@ -1,5 +1,5 @@
 import { CustomArticle } from "./Article.js";
-import { ENV } from '../../../../config/env.js';
+import { setENV } from '../../../../config/env.js';
 
 /** Créer des pages à partir des données */
 export class CustomPage extends CustomArticle {
@@ -43,7 +43,7 @@ export class CustomPage extends CustomArticle {
         art.classList.add('categorie');
         if(cat.Titre) art.appendChild(this.setText('h1', cat.Titre));
         
-        if(cat.Media.data) art.appendChild(this.setFigure(ENV.servurl + cat.Media.data.attributes.url));
+        if(cat.Media.data) art.appendChild(this.setFigure(setENV().servurl + cat.Media.data.attributes.url));
         if(cat.Description) art.appendChild(this.setHtml('div', cat.Description));
         
         el.appendChild(art);

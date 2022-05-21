@@ -1,7 +1,7 @@
 import { QL } from './QL.js';
 import { Menu } from '../pages/DOM/Menu.js';
 import { ServiceStore } from './Service.js';
-import { ENV } from '../../../config/env.js';
+import { setENV } from '../../../config/env.js';
 
 export class Graph extends QL {
 
@@ -33,7 +33,7 @@ export class Graph extends QL {
     }
     /** Récupérer les données des menus, catégories et articles */
     async getMenus() {
-        fetch(ENV.graphurl, {
+        fetch(setENV().graphurl, {
             method: 'POST',
             body: this.reqAll(),
             headers: this.headers()
@@ -50,7 +50,7 @@ export class Graph extends QL {
     };
     /** Faire une requête */
     getCategories() {
-        fetch(ENV.graphurl, {
+        fetch(setENV().graphurl, {
             method: 'POST',
             body: this.reqCategories(),
             headers: this.headers()
