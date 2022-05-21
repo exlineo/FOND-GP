@@ -1,14 +1,14 @@
 import { CustomBlog } from '../Blog.js';
 import { CustomBlogAlterne } from '../BlogAlterne.js';
 import { CustomCategorie } from '../Categorie.js';
-import { CustomEquipes } from '../Equipes.js';
 import { CustomContact } from '../Contact.js';
 import { CustomPortfolio } from '../Portfolio.js';
-import { CustomCategorieMenu } from '../CategorieMenu.js';
+import { CustomCategorieMenuDroite, CustomCategorieMenuGauche } from '../CategorieMenu.js';
+import { CustomCollectionImages, CustomCollectionMixte } from '../Collections.js';
 
 import { ServiceStore } from '../../data/Service.js';
-import { CustomCollectionImages } from '../CollectionImages.js';
-import { CustomCollectionMixte } from '../CollectionMixte.js';
+import { CustomForm } from '../Formulaire.js';
+import { CustomAnnuaire } from '../Annuaire.js';
 
 export class CustomRouter {
     ancre;
@@ -33,8 +33,12 @@ export class CustomRouter {
             classe: CustomCategorie,
             instance: null
         },{
-            alias: 'categorieMenu',
-            classe: CustomCategorieMenu,
+            alias: 'categorieMenuGauche',
+            classe: CustomCategorieMenuGauche,
+            instance: null
+        },{
+            alias: 'categorieMenuDroite',
+            classe: CustomCategorieMenuDroite,
             instance: null
         },{
             alias: 'collectionImages',
@@ -44,11 +48,15 @@ export class CustomRouter {
             alias: 'collectionMixte',
             classe: CustomCollectionMixte,
             instance: null
-        }, {
-            alias: 'equipes',
-            classe: CustomEquipes,
+        },{
+            alias: 'formulaire',
+            classe: CustomForm,
             instance: null
-        }, {
+        },{
+            alias: 'annuaire',
+            classe: CustomAnnuaire,
+            instance: null
+        },{
             alias: 'contact',
             classe: CustomContact,
             instance: null

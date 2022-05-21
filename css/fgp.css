@@ -92,7 +92,14 @@ nav ul li{
   margin:0;
   text-transform: uppercase;
 }
-nav.sous-menu{
+#contenu > section:nth-child(1) nav.sous-menu{
+  align-self: flex-end;
+  margin:0;
+  border-color:var(--fonce);
+  border-top:none;
+  border-right:none;
+}
+#contenu > section:nth-child(2) nav.sous-menu{
   align-self: flex-start;
   margin:0;
   border-color:var(--fonce);
@@ -143,7 +150,7 @@ main > header > nav{
 main > header > nav > ul{
   padding:10px 60px;
   border-bottom: 2px solid var(--s);
-  margin-bottom:2px;
+  margin-bottom:1px;
 }
 main > footer {
   font-size: 11px;
@@ -444,7 +451,7 @@ button a:hover{
 .blog-categorie > section:nth-child(2){
   justify-content: center;
 }
-.blog-categorie article.categorie{
+.blog-categorie > section:nth-child(1) article.categorie{
   text-align:right;
 }
 .blog-categorie article.categorie > div{

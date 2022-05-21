@@ -37,15 +37,18 @@ export class CustomPage extends CustomArticle {
     /** LES SECTIONS */
     /** Ecrire le contenu sur la gauche de la colonne */
     setCat(cat, el, ...attr) {
+        console.log(cat, el);
         el.innerHTML = '';
         const art = this.setEl('article', attr);
         art.classList.add('categorie');
         if(cat.Titre) art.appendChild(this.setText('h1', cat.Titre));
         
         if(cat.Media.data) art.appendChild(this.setFigure(ENV.servurl + cat.Media.data.attributes.url));
-        if (cat.Description) art.appendChild(this.setHtml('div', cat.Description));
+        if(cat.Description) art.appendChild(this.setHtml('div', cat.Description));
         
         el.appendChild(art);
+        
+        console.log(cat, el);
     }
     /** Définir la mise en page avec un nombre de colonnes */
     setCol(content) {
@@ -56,9 +59,9 @@ export class CustomPage extends CustomArticle {
         this.listeArticles(this.cols[this.cols.length - 1], content);
     }
     /** Créer un sous menu */
-    setSousMenu(menu, index=0){
+    setSousMenu(menu, col, index=0){
         console.log(menu);
-        this.cols[1].innerHTML = '';
+        this.cols[col].innerHTML = '';
         const nav = document.createElement('nav');
         const ul = document.createElement('ul');
         nav.className = 'sous-menu';
@@ -68,7 +71,7 @@ export class CustomPage extends CustomArticle {
             a.textContent = m.Lien.Titre;
             a.addEventListener('click', (e, i)=>{
                 console.log(e.target);
-                this.setSousMenu(menu, i);
+                this.setSousMenu(menu, this.cols[col], i);
             });
             li.appendChild(a);
             ul.appendChild(li);
@@ -76,9 +79,10 @@ export class CustomPage extends CustomArticle {
 
         nav.appendChild(ul);
         // Ecrire les articles
-        this.setArticles(menu[index].Categorie.data?.attributes.Articles.data, this.cols[1]);
+        const col2 = col == 1 ? 0 : 1;
+        const tmp = menu[index].Categorie.data?.attributes.Articles.data
+        if(tmp) this.setArticles(tmp, this.cols[col]);
 
-        this.cols[1].prepend(nav);
-        // this.setArticles(cat.Articles.data, this.cols[1]);
+        this.cols[col].prepend(nav);
     }
 }
