@@ -15,6 +15,6 @@ const PROD = {
 }
 
 export function setENV(){
-    const env = window.location.href.indexOf('localhost') ? ENV : PROD;
+    const env = window.location.href.indexOf('localhost') != -1 || window.location.href.indexOf('127.0.0.1') != -1 ? ENV : PROD;
     return env;
 }
