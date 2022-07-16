@@ -1,87 +1,35 @@
-import { CustomBlog } from '../Blog.js';
-import { CustomBlogAlterne } from '../BlogAlterne.js';
-import { CustomCategorie } from '../Categorie.js';
-import { CustomContact } from '../Contact.js';
-import { CustomPortfolio } from '../Portfolio.js';
-import { CustomCategorieMenuDroite, CustomCategorieMenuGauche } from '../CategorieMenu.js';
-import { CustomCollectionImages, CustomCollectionMixte } from '../Collections.js';
 
 import { ServiceStore } from '../../data/Service.js';
-import { CustomForm } from '../Formulaire.js';
-import { CustomAnnuaire } from '../Annuaire.js';
+import { INSTANCES } from '../../../../config/env.js';
 
 export class CustomRouter {
     ancre;
     page = {}; // Page en cours (lien + contenu)
     // Liste des templates instanciables
-    instances = [
-        {
-            alias: '',
-            classe: CustomCategorie,
-            instance: null
-        },
-        {
-            alias: 'blog',
-            classe: CustomBlog,
-            instance: null
-        }, {
-            alias: 'blogAlterne',
-            classe: CustomBlogAlterne,
-            instance: null
-        },{
-            alias: 'categorie',
-            classe: CustomCategorie,
-            instance: null
-        },{
-            alias: 'categorieMenuGauche',
-            classe: CustomCategorieMenuGauche,
-            instance: null
-        },{
-            alias: 'categorieMenuDroite',
-            classe: CustomCategorieMenuDroite,
-            instance: null
-        },{
-            alias: 'collectionImages',
-            classe: CustomCollectionImages,
-            instance: null
-        },{
-            alias: 'collectionMixte',
-            classe: CustomCollectionMixte,
-            instance: null
-        },{
-            alias: 'formulaire',
-            classe: CustomForm,
-            instance: null
-        },{
-            alias: 'annuaire',
-            classe: CustomAnnuaire,
-            instance: null
-        },{
-            alias: 'contact',
-            classe: CustomContact,
-            instance: null
-        }, {
-            alias: 'portfolio',
-            classe: CustomPortfolio,
-            instance: null
-    }];
+    instances = INSTANCES;
     constructor(){
+        addEventListener('route', (ev)=>{
+            this.setPage(ev.detail.route);
+        })
         this.initRoute(); // Initialiser la page au démarrage
     }
     /** La route lorsqu'on arrive sur la page */
     initRoute(){
-        const path = new URL(window.location.href).pathname;
+        // Identifier l'adresse actuelle
+        let path = new URL(window.location.href).pathname;
+        if(path == '/index.html') path = '/';
+        // Récupérer le menu en lien avec le chemin
         const adr = ServiceStore._menus.principal.filter(l => l.Lien.Url == path);
-        // Créer la page par défaut
+        // Créer une page par défaut
         this.setPage(adr[0]);
     }
     /** Créer la page avec les contenus
     * @param {Lien} lien Objet contenant toutes les informations du lien et de la page
     */
     setPage(page){
-        console.log(page);
-        this.instances.map(i => {
-            if(i.alias == page.Template.data?.attributes.Alias | 'categorie') this.instance = new i.classe(page.Categorie.data.attributes, page.Lien.Alias);
+        this.instances.forEach(i => {
+            if(i.alias == page.Template.data?.attributes.Alias | 'categorie')
+            this.instance = new i.classe(page.Categorie.data.attributes, page.Lien.Alias);
         });
     }
     /** Retrouver une classe en fonction du nom du template et inscrire l'instance dedans
@@ -98,6 +46,6 @@ export class CustomRouter {
     /** Identifier si un hash est présent dans l'adresse > la page a été actualisée */
     getAncre(){
         this.ancre = (document.URL.split('#').length > 1) ? document.URL.split('#')[1] : 'exlineo';
-        this.setEvents();
+        // this.setEvents();
     }
 }

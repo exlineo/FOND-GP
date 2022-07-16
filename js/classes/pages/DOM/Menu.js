@@ -26,7 +26,7 @@ export class Menu extends CustomDOM {
         this.creeMenu(this.piedEl, ServiceStore._menus.pied);
     };
     /** Etablir les événements de clic */
-    setEvents() {
+    setClickEvents() {
         this.liens.forEach(l => {
             l.addEventListener('click', (e) => {
                 this.check.checked = false; // On décheck la checkbox
@@ -37,6 +37,7 @@ export class Menu extends CustomDOM {
             })
         });
         this.setMobile();
+        // Créer la page du site
         this.router.setPage();
     };
     /** Caler les comportement du menu mobile */
@@ -49,50 +50,9 @@ export class Menu extends CustomDOM {
     ouvreMenuMobile() {
         this.menuMobile.classList.toggle('ouvert');
     }
-    /**
-     * Ecrire un menu ou un sous menu
-     * @param {HTMLElement} menu Elment HTML dans lequel écrire le menu
-     * @param {Array<Menu>} sm Liste des liens à afficher dans le menu
-     */
-    creeMenu(el, sm) {
-        const ul = document.createElement('ul');
-        sm.forEach(m => {
-            let li = document.createElement('li');
-            let a = document.createElement('a');
-            a.textContent = m.Lien.Titre;
-            if (m.Lien.Cible) a.setAttribute('target', m.Lien.Cible);
-            a.setAttribute('href', m.Lien.Url);
-            a.addEventListener('click', (e) => {
-                if (m.Lien.Cible != '_blank') {
-                    e.preventDefault();
-                    if (m.Template.data?.attributes) {
-                        // this.animationInit();
-                        this.router.setPage(m);
-                        history.pushState({ key: m.Lien.Url }, '', m.Lien.Url);
-                        // this.animationPage();
-                    }
-                }
-            });
-            li.appendChild(a);
-            ul.appendChild(li);
-            // Créer les sous menus
-            if (m['enfants']) {
-                this.creeMenu(li, m.enfants)
-            }
-        });
-        el.appendChild(ul);
-    }
-    /** Créer les sous menus */
-    triMenus(menu) {
-        menu.forEach((m, i) => {
-            if (m.Parent.data) {
-                const parent = menu[m.Parent.data.id - 1];
-                if (!parent['enfants']) parent['enfants'] = [];
-                parent.enfants.push(m);
-                delete menu[i];
-            };
-        });
-        return menu;
+    /** Gestion des événements */
+    setRoute(r){
+        this.dispatchEvent(new CustomEvent('route', {detail:{route:r}}))
     }
     /** Animations */
     animationInit() {

@@ -17,20 +17,6 @@ export class Graph extends QL {
         this.getMenus(); // Récupérer les menus depuis la base
         this.s = new ServiceStore(); // Stocker les données pour les partager
     }
-    /** Récuprer la configuration de la base */
-    getConfig() {
-        if (!this.config && this.listeCategories.length == 0) {
-            fetch('../../config/graph.json')
-                .then(res => res.json())
-                .then(data => {
-                    this.config = data;
-                    this.getMenus();
-                })
-                .catch(er => console.log('Erreur de configuration', er))
-        } else {
-            this.getMenus();
-        }
-    }
     /** Récupérer les données des menus, catégories et articles */
     async getMenus() {
         fetch(setENV().graphurl, {

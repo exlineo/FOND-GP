@@ -89,20 +89,52 @@ export class CustomDOM extends CustomPopup {
             behavior:'smooth'
         });
     }
-    /** Envoyer un événement pour signifier qu'il y a des articles à créer */
-    // setArticlesEvent(alias, obj){
-    //     let ev = new CustomEvent('articles', {"detail":{alias, obj}});
-    //     dispatchEvent(ev);
-    // }
-    setMenu(el){
-        let liens = el.querySelectorAll('a');
-        if(liens.length > 0){
-            liens.map(l => {
-                let coord = l.getAttribute('href');
-                l.addEventListener('click', (e)=>{
-                    
-                });
+    /**
+     * Ecrire un menu ou un sous menu
+     * @param {HTMLElement} el Elment HTML dans lequel écrire le menu
+     * @param {Array<Menu>} sm Liste des liens à afficher dans le menu
+     */
+     creeMenu(el, sm) {
+        // console.log(el, sm);
+        const ul = document.createElement('ul');
+        sm.forEach(m => {
+            let li = document.createElement('li');
+            let a = document.createElement('a');
+            a.textContent = m.Lien.Titre;
+            if (m.Lien.Cible) a.setAttribute('target', m.Lien.Cible);
+            a.setAttribute('href', m.Lien.Url);
+            a.addEventListener('click', (e) => {
+                if (m.Lien.Cible != '_blank') {
+                    e.preventDefault();
+                    if (m.Template.data?.attributes) {
+                        // this.animationInit();
+                        this.router.setPage(m);
+                        history.pushState({ key: m.Lien.Url }, '', m.Lien.Url);
+                        // this.animationPage();
+                    }
+                }
             });
-        };
+            li.appendChild(a);
+            ul.appendChild(li);
+            // Créer les sous menus
+            if (m['enfants']) {
+                this.creeMenu(li, m.enfants)
+            }
+        });
+        el.appendChild(ul);
+    }
+    /** Créer les sous menus */
+    triMenus(menu) {
+        menu.forEach((m, i) => {
+            if (m.Parent.data) {
+                // console.log(m);
+                // const parent = menu[m.Parent.data.id - 1];
+                const parent = menu.filter(s => s.id == m.Parent.data?.id)[0];
+                if (!parent.hasOwnProperty('enfants')) parent['enfants'] = [];
+                parent.enfants.push(m);
+                delete menu[i];
+            };
+        });
+        return menu;
     }
 }

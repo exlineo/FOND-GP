@@ -92,6 +92,39 @@ export class QL {
                   }
                 }
               }
+              Agendas{
+                data{
+                  attributes{
+                    Titre
+                    Alias
+                  }
+                }
+              }
+              Cartes{
+                data{
+                  attributes{
+                    Titre
+                    Alias
+                    Description
+                    Coordonnees
+                    Lien{
+                      Titre
+                      Url
+                      Description
+                      Cible
+                    }
+                    Localisation{
+                      Titre
+                      Latitude
+                      Longitude
+                    }
+                    Type{
+                      id
+                      Types
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -226,6 +259,35 @@ export class QL {
                           url
                         }
                       }
+                    }
+                  }
+                }
+              }
+              Agendas{
+                data{
+                  attributes{
+                    Titre
+                    Alias
+                  }
+                }
+              }
+              Cartes{
+                data{
+                  attributes{
+                    Titre
+                    Alias
+                    Description
+                    Coordonnees
+                    Liens{
+                      Titre
+                      Url
+                      Description
+                      Cible
+                    }
+                    Localisation{
+                      Titre
+                      Latitude
+                      Longitude
                     }
                   }
                 }

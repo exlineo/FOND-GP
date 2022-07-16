@@ -20,8 +20,9 @@ export class ServiceStore {
   /** Trier les données pour créer des menus */
   setMenus(data){
     const menus = {};
-    data.forEach(d => {
-      d = d.attributes;
+    data.forEach(t => {
+      let d = t.attributes;
+      d.id = t.id;
       const m = d.Rattachement.data.attributes.Alias;
       if(!menus.hasOwnProperty(m)){
         menus[m] = [];

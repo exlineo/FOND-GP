@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "..\\WC"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "..\\BACK-STRAPI"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "FONDS-GP"
+	}
+}

@@ -1,5 +1,6 @@
 import { CustomArticle } from "./Article.js";
 import { setENV } from '../../../../config/env.js';
+import { ServiceStore } from '../../data/Service.js';
 
 /** Créer des pages à partir des données */
 export class CustomPage extends CustomArticle {
@@ -37,7 +38,6 @@ export class CustomPage extends CustomArticle {
     /** LES SECTIONS */
     /** Ecrire le contenu sur la gauche de la colonne */
     setCat(cat, el, ...attr) {
-        console.log(cat, el);
         el.innerHTML = '';
         const art = this.setEl('article', attr);
         art.classList.add('categorie');
@@ -47,8 +47,6 @@ export class CustomPage extends CustomArticle {
         if(cat.Description) art.appendChild(this.setHtml('div', cat.Description));
         
         el.appendChild(art);
-        
-        console.log(cat, el);
     }
     /** Définir la mise en page avec un nombre de colonnes */
     setCol(content) {
@@ -60,29 +58,31 @@ export class CustomPage extends CustomArticle {
     }
     /** Créer un sous menu */
     setSousMenu(menu, col, index=0){
-        console.log(menu);
         this.cols[col].innerHTML = '';
         const nav = document.createElement('nav');
-        const ul = document.createElement('ul');
         nav.className = 'sous-menu';
-        menu.forEach((m, i) => {
-            const li = document.createElement('li');
-            const a = document.createElement('a');
-            a.textContent = m.Lien.Titre;
-            a.addEventListener('click', (e, i)=>{
-                console.log(e.target);
-                this.setSousMenu(menu, this.cols[col], i);
-            });
-            li.appendChild(a);
-            ul.appendChild(li);
-        });
+        // menu.forEach((m, i) => {
+        //     console.log(m, i);
+        //     if(!m.Parent.data){
+        //         const li = document.createElement('li');
+        //         const a = document.createElement('a');
+        //         a.textContent = m.Lien.Titre;
+        //         a.addEventListener('click', (e)=>{
+        //             console.log(e.target, menu, col, i);
+        //             this.setSousMenu(menu, col, i);
+        //         });
+        //         li.appendChild(a);
+        //         ul.appendChild(li);
+        //     }
+        // });
 
-        nav.appendChild(ul);
-        // Ecrire les articles
-        const col2 = col == 1 ? 0 : 1;
-        const tmp = menu[index].Categorie.data?.attributes.Articles.data
-        if(tmp) this.setArticles(tmp, this.cols[col]);
-
+        // nav.appendChild(ul);
+        // // Ecrire les articles
+        // const col2 = col == 1 ? 0 : 1;
+        // const tmp = menu[index].Categorie.data?.attributes.Articles.data;
+        // if(tmp) this.setArticles(tmp, this.cols[col]);
+        console.log(this.triMenus(menu));
+        this.creeMenu(nav, this.triMenus(menu));
         this.cols[col].prepend(nav);
     }
 }
