@@ -67,10 +67,11 @@ h6{
 }
 a {
     cursor: pointer;
-    font-weight:normal;
+    font-weight:600;
     color:var(--p);
     transition:all .4s ease;
     text-decoration: none;
+    color:var(--q);
 }
 a:hover{
     color:var(--t);
@@ -92,19 +93,23 @@ nav ul li{
   margin:0;
   text-transform: uppercase;
 }
+nav a{
+  font-weight:400;
+  color:var(--fonce);
+}
 #contenu > section:nth-child(1) nav.sous-menu{
   align-self: flex-end;
-  margin:0;
   border-color:var(--fonce);
-  border-top:none;
   border-right:none;
 }
 #contenu > section:nth-child(2) nav.sous-menu{
   align-self: flex-start;
-  margin:0;
   border-color:var(--fonce);
-  border-top:none;
   border-left:none;
+}
+nav.sous-menu{
+  margin:50px 0 0 0;
+  border-top:none;
 }
 nav.sous-menu ul{
   padding:10px 40px;
@@ -198,10 +203,16 @@ article > div > label{
 }
 #contenu > section{
   width:50vw;
+  /* height: calc(100vh - 150px); */
   height:100%;
   box-sizing: border-box;
   overflow-y:auto;
   overflow-x: hidden;
+  align-items: center;
+  box-sizing: border-box;
+}
+#contenu > section > article{
+  margin:auto;
 }
 #contenu > section:nth-child(1){
   border-right:1px solid var(--s);
@@ -530,6 +541,9 @@ button a:hover{
 }
 section.blog{
   align-items:center;
+}
+section.blog > article{
+  margin:auto 0;
 }
 article.categorie > img{
   max-width:400px;

@@ -14,7 +14,7 @@ export class CustomArticle extends CustomDOM {
 
         if (a.MediaIntro.data) { obj.imageA = this.setFigure(a.MediaIntro.data.attributes.url) };
         if (a.Titre) { obj.titre = this.setText('h2', a.Titre) };
-        if (a.Intro) { obj.intro = this.setText('p', a.Intro) };
+        if (a.Intro) { obj.intro = this.setHtml('div', a.Intro) };
         if (a.MediaContenu.data) { obj.imageA = this.setFigure(a.MediaContenu.data.attributes.url) };
         if (a.Contenu) { obj.contenu = this.setHtml('div', a.Contenu) };
 
@@ -33,7 +33,7 @@ export class CustomArticle extends CustomDOM {
         let article = this.setEl('article');
         this.setAttr(article, { name: 'id', value: a.alias });
         article.className = this.setAnimStyle(toggle);
-        
+
         let div = this.setEl('div');
 
         if (a.imageA) article.appendChild(this.setFigure(a.imageA));

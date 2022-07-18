@@ -5,6 +5,8 @@ export class CustomDOM extends CustomPopup {
     constructor() {
         super();
         this.md = new showdown.Converter();
+        this.md.setOption('simplifiedAutoLink', 'true');        
+        this.md.setOption('openLinksInNewWindow', 'true');
     }
     /** Créer un élément HTML : el = le nom de l'élément, target = l'id de l'élément cible, ...attr = la liste des éléments */
     setEl(el, ...attr) {
