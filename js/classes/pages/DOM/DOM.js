@@ -1,4 +1,5 @@
 import { CustomPopup } from './Popup.js';
+import { setENV } from '../../../../config/env.js';
 
 export class CustomDOM extends CustomPopup {
     constructor() {
@@ -14,18 +15,18 @@ export class CustomDOM extends CustomPopup {
         return e;
     }
     /** Ecrire un élément contenant du texte */
-    setText(el, text=null, ...attr) {
+    setText(el, text = null, ...attr) {
         let e = document.createElement(el);
-        if(text) e.textContent = text;
+        if (text) e.textContent = text;
         if (attr) {
             this.setAttr(e, ...attr);
         };
         return e;
     }
     /** Ecrire un élément contenant du HTML */
-    setHtml(el, html=null, ...attr){
+    setHtml(el, html = null, ...attr) {
         let e = document.createElement(el);
-        if(html) e.innerHTML = this.md.makeHtml(html);
+        if (html) e.innerHTML = this.md.makeHtml(html);
         if (attr) {
             this.setAttr(e, ...attr);
         };
@@ -34,7 +35,7 @@ export class CustomDOM extends CustomPopup {
     /** Créer une image avec arrière plan */
     setFigure(src, ...attr) {
         let fig = document.createElement('figure');
-        if(src) this.setAttr(fig, {name:'style', value:`background-image:url(${src})`});
+        if (src) this.setAttr(fig, { name: 'style', value: `background-image:url(${setENV().servurl + src})` });
         if (attr) {
             this.setAttr(fig, ...attr);
         };
@@ -43,50 +44,50 @@ export class CustomDOM extends CustomPopup {
     /** Créer une image */
     setImg(src, ...attr) {
         let img = document.createElement('img');
-        if(src) img.src = src;
+        if (src) img.src = src;
         if (attr) {
             this.setAttr(img, ...attr);
         };
         return img;
     }
     /** Créer un bouton avec un lien */
-    setBouton(lien, target='_blank'){
+    setBouton(lien, target = '_blank') {
         let bouton = document.createElement('button');
         bouton.textContent = 'En savoir plus';
-        bouton.addEventListener('click', (e)=>{
+        bouton.addEventListener('click', (e) => {
             window.open(lien, target);
         });
         return bouton;
     }
     /** Créer un bouton avec un lien */
-    setPopup(lien){
+    setPopup(lien) {
         let bouton = document.createElement('button');
         bouton.textContent = 'En savoir plus';
-        bouton.addEventListener('click', (e)=>{
+        bouton.addEventListener('click', (e) => {
             this.creePopup(lien);
         })
         return bouton;
     }
     /** Ecrire un label avec l'année sur un article */
-    setLabel(annee){
+    setLabel(annee) {
         let label = document.createElement('label');
         label.textContent = annee;
         return label;
     }
     /** Ecrire les attributs sur la balise */
-    setAttr(e, ...attr){
+    setAttr(e, ...attr) {
         attr.forEach(
             a => {
-                if(e) e.setAttribute(a.name, a.value);
+                if (e) e.setAttribute(a.name, a.value);
             }
         )
     }
     /** Gérer un scroll d'un élément sur un clic de menu */
-    setScroll(el, x, y){
+    setScroll(el, x, y) {
         el.scrollBy({
-            top:x,
-            left:y,
-            behavior:'smooth'
+            top: x,
+            left: y,
+            behavior: 'smooth'
         });
     }
     /**
@@ -94,7 +95,7 @@ export class CustomDOM extends CustomPopup {
      * @param {HTMLElement} el Elment HTML dans lequel écrire le menu
      * @param {Array<Menu>} sm Liste des liens à afficher dans le menu
      */
-     creeMenu(el, sm) {
+    creeMenu(el, sm, cible=null) {
         // console.log(el, sm);
         const ul = document.createElement('ul');
         sm.forEach(m => {
@@ -104,13 +105,14 @@ export class CustomDOM extends CustomPopup {
             if (m.Lien.Cible) a.setAttribute('target', m.Lien.Cible);
             a.setAttribute('href', m.Lien.Url);
             a.addEventListener('click', (e) => {
+                console.log(m, el.nextSibling);
+                e.preventDefault();
                 if (m.Lien.Cible != '_blank') {
-                    e.preventDefault();
-                    if (m.Template.data?.attributes) {
-                        // this.animationInit();
+                    if (m.Template.data?.attributes.Alias == 'categorie-integree') {
+                        this.setArticles(m.Categorie.data.attributes.Articles.data, cible);
+                    } else {
                         this.router.setPage(m);
                         history.pushState({ key: m.Lien.Url }, '', m.Lien.Url);
-                        // this.animationPage();
                     }
                 }
             });
@@ -127,8 +129,6 @@ export class CustomDOM extends CustomPopup {
     triMenus(menu) {
         menu.forEach((m, i) => {
             if (m.Parent.data) {
-                // console.log(m);
-                // const parent = menu[m.Parent.data.id - 1];
                 const parent = menu.filter(s => s.id == m.Parent.data?.id)[0];
                 if (!parent.hasOwnProperty('enfants')) parent['enfants'] = [];
                 parent.enfants.push(m);
@@ -136,5 +136,21 @@ export class CustomDOM extends CustomPopup {
             };
         });
         return menu;
+    }
+    /** Créer un sous menu */
+    setSousMenu(menu, col) {
+        this.cols[col].innerHTML = '';
+        const nav = document.createElement('nav');
+        const div = document.createElement('div');
+        nav.className = 'sous-menu';
+        this.cols[col].appendChild(div);
+        this.creeMenu(nav, this.triMenus(menu), div);
+        this.cols[col].prepend(nav);
+        this.setArticles(menu[0].Categorie.data.attributes.Articles.data, div);
+    }
+    /** Add style to article to animate it */
+    setAnimStyle(toggle){
+        if(toggle) return 'anim-gauche';
+        return 'anim-droite';
     }
 }

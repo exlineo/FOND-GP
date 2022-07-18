@@ -5,10 +5,12 @@ export class CustomPortfolio extends CustomPage {
     popup; // Popup Html à écrire
     limites = {debut:0,nb:4,ecart:0};
 
-    constructor(cat, alias){
+    constructor(cat, alias, style=null){
         super(cat, alias);
-        this.target.classList.add('portfolio');
-        this.setMur();
+        document.getElementById('contenu').classList.add('portfolio');
+        
+        this.setStyle(1, 0, style);
+        // this.setMur();
     }
     /** Afficher les images des références */
     setMur(){

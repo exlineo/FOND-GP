@@ -132,7 +132,6 @@ export class QL {
         Rattachement{
           data{
             attributes{
-              Titre
               Alias
               Type
             } 
@@ -145,9 +144,14 @@ export class QL {
         }
         Template{
           data{
-            id
             attributes{
-              Titre
+              Alias
+            }
+          }
+        }
+        Style{
+          data{
+            attributes{
               Alias
             }
           }
@@ -156,8 +160,8 @@ export class QL {
     }
   }
 }`
-  })
-}
+    })
+  }
 
   /** Requete pour récupérer la liste des articles */
   reqArticles() {

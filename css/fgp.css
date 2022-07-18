@@ -171,6 +171,7 @@ article{
   padding:0 50px;
   flex-flow:column nowrap;
   text-align: justify;
+  box-sizing: border-box;
 }
 article > div{
   padding:0;
@@ -208,6 +209,25 @@ article > div > label{
 #contenu > section:nth-child(2){
   border-left:1px solid var(--t);
 }
+/* PAGES */
+section.equipe > div{
+  display:flex;
+  flex-flow:row wrap;
+}
+section.equipe article{
+  width:33%;
+  padding:10px 15px;
+}
+section.equipe article figure{
+  min-height:175px;
+}
+section.equipe article h2{
+  font-size: 21px;
+}
+section.equipe article p{
+  padding:0;
+  margin:0;
+}
 p{
   padding-left:50px;
 }
@@ -235,13 +255,15 @@ figure{
   width:100%;
   min-height:300px;
   background:50% no-repeat;
-  /* background-size: contain; */
-  background-size: cover;
+  background-size:100%;
   padding:0;
   margin:0;
   box-sizing: border-box;
   border-bottom:4px solid var(--t);
-  /* border-right:4px solid var(--s); */
+  transition: all .3s ease;
+}
+figure:hover{
+  background-size: 110%;
 }
 button{
   width: max-content;
@@ -447,26 +469,10 @@ button a:hover{
     display:block;
     opacity:1;
   }
-/* CLASSES PERSONNALISEES */
-.blog-categorie > section:nth-child(2){
-  justify-content: center;
-}
-.blog-categorie > section:nth-child(1) article.categorie{
-  text-align:right;
-}
-.blog-categorie article.categorie > div{
-  text-align:justify;
-}
-article.categorie > img{
-  max-width:400px;
-  align-self: flex-end;
-}
-.droite{
-  text-align:right;
-}
+
 /* BLOG (articles en enfilade et données de la catégorie */
 .blog > section, .blog-double > section {
-  flex-flow:column nowrap;
+  /* flex-flow:column nowrap; */
 }
 .blog > section:nth-child(1){
 
@@ -511,6 +517,26 @@ article.categorie > img{
 #popup article > div{
   display:flex;
   flex-flow: column nowrap;
+}
+/* CLASSES PERSONNALISEES */
+.blog-categorie > section:nth-child(2){
+  justify-content: center;
+}
+.blog-categorie > section:nth-child(1) article.categorie{
+  text-align:right;
+}
+.blog-categorie article.categorie > div{
+  text-align:justify;
+}
+section.blog{
+  align-items:center;
+}
+article.categorie > img{
+  max-width:400px;
+  align-self: flex-end;
+}
+.droite{
+  text-align:right;
 }
 .close {
   position: absolute;

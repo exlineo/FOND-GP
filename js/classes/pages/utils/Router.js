@@ -1,6 +1,6 @@
 
 import { ServiceStore } from '../../data/Service.js';
-import { INSTANCES } from '../../../../config/env.js';
+import { INSTANCES } from '../DOM/Instances.js';
 
 export class CustomRouter {
     ancre;
@@ -27,10 +27,12 @@ export class CustomRouter {
     * @param {Lien} lien Objet contenant toutes les informations du lien et de la page
     */
     setPage(page){
+        let tmp = 'categorie';
         this.instances.forEach(i => {
-            if(i.alias == page.Template.data?.attributes.Alias | 'categorie')
-            this.instance = new i.classe(page.Categorie.data.attributes, page.Lien.Alias);
+            if(i.alias == page.Template.data?.attributes.Alias) tmp = i;
         });
+        const style = page.Style.data ? page.Style.data.attributes.Alias : null;
+        this.instance = new tmp.classe(page.Categorie.data.attributes, page.Lien.Alias, style);
     }
     /** Retrouver une classe en fonction du nom du template et inscrire l'instance dedans
      */

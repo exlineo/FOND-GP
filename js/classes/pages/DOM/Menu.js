@@ -50,7 +50,7 @@ export class Menu extends CustomDOM {
     ouvreMenuMobile() {
         this.menuMobile.classList.toggle('ouvert');
     }
-    /** Gestion des événements */
+    /** Indiquer une route en utilisant un événement */
     setRoute(r){
         this.dispatchEvent(new CustomEvent('route', {detail:{route:r}}))
     }

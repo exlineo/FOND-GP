@@ -2,14 +2,13 @@ import { CustomDOM } from "./DOM.js";
 
 export class CustomArticle extends CustomDOM {
     alias;
-    // articles;
 
     constructor() {
         super();
     };
 
     /** Créer un article */
-    setArticle(a) {
+    setArticle(a, toggle=1) {
         let article = this.setEl('article');
         let obj = {}; // Objet d'initialisation
 
@@ -30,10 +29,11 @@ export class CustomArticle extends CustomDOM {
         return article;
     };
     /** Créer un article ouvert avec une popup (pour les références) (un cartel ave une image) */
-    setRef(a) {
+    setRef(a, toggle=1) {
         let article = this.setEl('article');
         this.setAttr(article, { name: 'id', value: a.alias });
-
+        article.className = this.setAnimStyle(toggle);
+        
         let div = this.setEl('div');
 
         if (a.imageA) article.appendChild(this.setFigure(a.imageA));
@@ -88,4 +88,5 @@ export class CustomArticle extends CustomDOM {
             }
         };
     }
+    
 }

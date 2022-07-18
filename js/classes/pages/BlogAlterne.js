@@ -1,15 +1,12 @@
 import { CustomPage } from "./DOM/Page.js";
 
 export class CustomBlogAlterne extends CustomPage {
-
-    cols; // Les cols de la mise en page
-
-    constructor(cat, alias){
+    constructor(cat, alias, style=null){
         super(cat, alias);
-        this.target.classList.add('blog');
-        this.cols = [];
+        document.getElementById('contenu').classList.add('blog');
+        
+        this.setStyle(1, 0, style);
         // Créer les infos des catégories
-        this.setCat();
+        this.setCat(cat, this.cols[0]);
     }
-    
 }
