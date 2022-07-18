@@ -28,7 +28,6 @@ export class CustomPage extends CustomArticle {
     }
     /** Afficher la liste des articles sélectionnés */
     listeArticles(articles) {
-        console.log(localTarget);
         articles.forEach(a => {
             // Créer des articles complets ou juste l'intro en fonction de la mise en page
             this.categorie.MiseEnPage.type != 'CustomPortfolio' ? localTarget.appendChild(this.setArticle(a)) : localTarget.appendChild(this.setRef(a));
@@ -42,7 +41,7 @@ export class CustomPage extends CustomArticle {
         art.classList.add('categorie'); // Affichage spécifique de l'article
         if(cat.Titre) art.appendChild(this.setText('h1', cat.Titre));
         
-        if(cat.Media.data) art.appendChild(this.setFigure(cat.Media.data.attributes.url));
+        if(cat.Media.data) art.appendChild(this.setFigure(cat.Media.data.attributes));
         if(cat.Description) art.appendChild(this.setHtml('div', cat.Description));
         
         el.appendChild(art);
@@ -58,5 +57,7 @@ export class CustomPage extends CustomArticle {
     setStyle(el, pasEl, style){
         style ? this.cols[el].className = style + ' blog' : this.cols[el].className = 'blog';
         this.cols[pasEl].className = '';
+        // this.cols[0].className = this.cols[0].className + ' apparait-gauche';
+        // this.cols[1].className = this.cols[1].className + ' apparait-droite';
     }
 }

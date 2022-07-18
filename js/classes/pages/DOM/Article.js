@@ -12,10 +12,10 @@ export class CustomArticle extends CustomDOM {
         let article = this.setEl('article');
         let obj = {}; // Objet d'initialisation
 
-        if (a.MediaIntro.data) { obj.imageA = this.setFigure(a.MediaIntro.data.attributes.url) };
+        if (a.MediaIntro.data) { obj.imageA = this.setFigure(a.MediaIntro.data.attributes) };
         if (a.Titre) { obj.titre = this.setText('h2', a.Titre) };
         if (a.Intro) { obj.intro = this.setHtml('div', a.Intro) };
-        if (a.MediaContenu.data) { obj.imageA = this.setFigure(a.MediaContenu.data.attributes.url) };
+        if (a.MediaContenu.data) { obj.imageA = this.setFigure(a.MediaContenu.data.attributes) };
         if (a.Contenu) { obj.contenu = this.setHtml('div', a.Contenu) };
 
         for (let i in obj) {

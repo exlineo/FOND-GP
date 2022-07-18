@@ -5,7 +5,7 @@ export class CustomDOM extends CustomPopup {
     constructor() {
         super();
         this.md = new showdown.Converter();
-        this.md.setOption('simplifiedAutoLink', 'true');        
+        this.md.setOption('simplifiedAutoLink', 'true');
         this.md.setOption('openLinksInNewWindow', 'true');
     }
     /** Créer un élément HTML : el = le nom de l'élément, target = l'id de l'élément cible, ...attr = la liste des éléments */
@@ -35,13 +35,19 @@ export class CustomDOM extends CustomPopup {
         return e;
     }
     /** Créer une image avec arrière plan */
-    setFigure(src, ...attr) {
-        let fig = document.createElement('figure');
-        if (src) this.setAttr(fig, { name: 'style', value: `background-image:url(${setENV().servurl + src})` });
-        if (attr) {
-            this.setAttr(fig, ...attr);
+    setFigure(media) {
+        const div = document.createElement('div');
+        if (media.url) {
+            const fig = document.createElement('figure');
+            this.setAttr(fig, { name: 'style', value: `background-image:url(${setENV().servurl + media.url})` });
+            div.appendChild(fig);
         };
-        return fig;
+        if (media.caption) {
+            const legende = document.createElement('legend');
+            legende.textContent = media.caption;
+            div.appendChild(legende);
+        }
+        return div;
     }
     /** Créer une image */
     setImg(src, ...attr) {
@@ -97,8 +103,7 @@ export class CustomDOM extends CustomPopup {
      * @param {HTMLElement} el Elment HTML dans lequel écrire le menu
      * @param {Array<Menu>} sm Liste des liens à afficher dans le menu
      */
-    creeMenu(el, sm, cible=null) {
-        // console.log(el, sm);
+    creeMenu(el, sm, cible = null) {
         const ul = document.createElement('ul');
         sm.forEach(m => {
             let li = document.createElement('li');
@@ -107,7 +112,6 @@ export class CustomDOM extends CustomPopup {
             if (m.Lien.Cible) a.setAttribute('target', m.Lien.Cible);
             a.setAttribute('href', m.Lien.Url);
             a.addEventListener('click', (e) => {
-                console.log(m, el.nextSibling);
                 e.preventDefault();
                 if (m.Lien.Cible != '_blank') {
                     if (m.Template.data?.attributes.Alias == 'categorie-integree') {
@@ -117,6 +121,7 @@ export class CustomDOM extends CustomPopup {
                         history.pushState({ key: m.Lien.Url }, '', m.Lien.Url);
                     }
                 }
+                this.toggleMobile();
             });
             li.appendChild(a);
             ul.appendChild(li);
@@ -151,8 +156,8 @@ export class CustomDOM extends CustomPopup {
         this.setArticles(menu[0].Categorie.data.attributes.Articles.data, div);
     }
     /** Add style to article to animate it */
-    setAnimStyle(toggle){
-        if(toggle) return 'anim-gauche';
+    setAnimStyle(toggle) {
+        if (toggle) return 'anim-gauche';
         return 'anim-droite';
     }
 }

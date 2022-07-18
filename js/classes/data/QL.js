@@ -30,18 +30,16 @@ export class QL {
               MediaIntro{
                 data{
                   attributes{
-                    name
                     url
-                    previewUrl
+                    caption
                   } 
                 }
               }
               MediaContenu{
                 data{
                   attributes{
-                    name
                     url
-                    previewUrl
+                    caption
                   } 
                 }
               }
@@ -57,8 +55,8 @@ export class QL {
               Media{
                 data{
                   attributes{
-                    name
                     url
+                    caption
                   } 
                 }
               }
@@ -74,9 +72,8 @@ export class QL {
                     MediaIntro{
                       data{
                         attributes{
-                          name
                           url
-                          previewUrl
+                          caption
                         } 
                       }
                     }
@@ -175,11 +172,9 @@ export class QL {
                 Intro
                 MediaIntro{
                     data{
-                    id
                     attributes{
-                        name
                         url
-                        previewUrl
+                        caption
                     }
                     }
                 }
@@ -188,9 +183,8 @@ export class QL {
                     data{
                     id
                     attributes{
-                        name
                         url
-                        previewUrl
+                        caption
                     }
                     }
                 }
@@ -251,16 +245,16 @@ export class QL {
                     MediaIntro{
                       data{
                         attributes{
-                          name
                           url
+                          caption
                         }
                       }
                     }
                     MediaContenu{
                       data{
                         attributes{
-                          name
                           url
+                          caption
                         }
                       }
                     }

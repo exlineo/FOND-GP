@@ -101,11 +101,13 @@ nav a{
   align-self: flex-end;
   border-color:var(--fonce);
   border-right:none;
+  border-left:1px solid var(--t);
 }
 #contenu > section:nth-child(2) nav.sous-menu{
   align-self: flex-start;
   border-color:var(--fonce);
   border-left:none;
+  border-right:1px solid var(--t);
 }
 nav.sous-menu{
   margin:50px 0 0 0;
@@ -275,6 +277,11 @@ figure{
 }
 figure:hover{
   background-size: 110%;
+}
+legend {
+  font-size:10px;
+  color:white;
+  margin-top:-15px;
 }
 button{
   width: max-content;
