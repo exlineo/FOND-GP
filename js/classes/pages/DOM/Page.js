@@ -57,7 +57,5 @@ export class CustomPage extends CustomArticle {
     setStyle(el, pasEl, style){
         style ? this.cols[el].className = style + ' blog' : this.cols[el].className = 'blog';
         this.cols[pasEl].className = '';
-        // this.cols[0].className = this.cols[0].className + ' apparait-gauche';
-        // this.cols[1].className = this.cols[1].className + ' apparait-droite';
     }
 }
