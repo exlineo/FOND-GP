@@ -7,7 +7,7 @@ export class ServiceStore {
   static _menus = {}; // La liste des menus
   static _listeCategories = []; // Liste des catégories
 
-  constructor(scope){
+  constructor(scope) {
     this.scope = scope;
   }
   // Créer un singleton pour les données
@@ -18,13 +18,13 @@ export class ServiceStore {
     return this.instance;
   }
   /** Trier les données pour créer des menus */
-  setMenus(data){
+  setMenus(data) {
     const menus = {};
     data.forEach(t => {
       let d = t.attributes;
       d.id = t.id;
       const m = d.Rattachement.data.attributes.Alias;
-      if(!menus.hasOwnProperty(m)){
+      if (!menus.hasOwnProperty(m)) {
         menus[m] = [];
       }
       menus[m].push(d);
@@ -32,21 +32,13 @@ export class ServiceStore {
     ServiceStore._menus = menus;
   }
   /** Créer les sous menus */
-  triMenus(menu){
+  triMenus(menu) {
     menu.forEach(m => {
-        if(m.Parent.data) {
-            const parent = menu[m.Parent.data.id - 1];
-            if (!parent['enfants']) parent['enfants'] = [];
-            parent.enfants.push(m);
-        };
+      if (m.Parent.data) {
+        const parent = menu[m.Parent.data.id - 1];
+        if (!parent['enfants']) parent['enfants'] = [];
+        parent.enfants.push(m);
+      };
     })
-}
-  /** Récuperer un menu depuis son ID ou son Titre */
-  getMenu(id){
-
-  }
-  /** Créer la lsite des catégories à partir des menus */
-  setCategories(){
-
   }
 }

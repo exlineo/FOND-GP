@@ -5,13 +5,12 @@ import { CustomPage } from "./DOM/Page.js";
 export class CustomCategorieMenuDroite extends CustomPage {
     constructor(cat, alias, style=null){
         super(cat);
-        document.getElementById('contenu').classList.add('blog-menu-droite');
-        this.setCat(cat, this.cols[0]);
-
-        this.setStyle(1, 0, style);
+        document.getElementById('contenu').className = 'blog-menu-droite';
+        this.setCat(cat, 1);
+        
         // Ecriture des articles et du sous-menu
         if(ServiceStore._menus[alias]) {
-            this.setSousMenu(ServiceStore._menus[alias], 1);
+            this.setSousMenu(ServiceStore._menus[alias]);
         };
     }
 }
@@ -19,13 +18,13 @@ export class CustomCategorieMenuDroite extends CustomPage {
 export class CustomCategorieMenuGauche extends CustomPage {
     constructor(cat, alias, style){
         super(cat);
-        document.getElementById('contenu').classList.add('blog-menu-gauche');
-        this.setCat(cat, this.cols[1]);
+        document.getElementById('contenu').className = 'blog-menu-gauche';
+        console.log("Catégorie gauche", cat);
+        this.setCat(cat, 0);
 
-        this.setStyle(0, 1, style);
         // Ecriture des articles et du sous-menu
         if(ServiceStore._menus[alias]) {
-            this.setSousMenu(ServiceStore._menus[alias], 0);
+            this.setSousMenu(ServiceStore._menus[alias]);
         };
     }
 }

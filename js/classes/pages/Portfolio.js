@@ -7,9 +7,7 @@ export class CustomPortfolio extends CustomPage {
 
     constructor(cat, alias, style=null){
         super(cat, alias);
-        document.getElementById('contenu').classList.add('portfolio');
-        
-        this.setStyle(1, 0, style);
+        document.getElementById('contenu').className = 'portfolio';
         // this.setMur();
     }
     /** Afficher les images des références */
@@ -18,7 +16,6 @@ export class CustomPortfolio extends CustomPage {
         this.categorie.Articles.items.sort((a, b) => {
             return b.annee - a.annee;
         });
-        this.setCol(this.categorie.Articles.items);
     };
     /** Créer un article */
     setImage(a){

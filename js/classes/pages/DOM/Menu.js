@@ -31,15 +31,6 @@ export class Menu extends CustomDOM {
         this.creeMenu(this.mobileEl, this.triMenus(ServiceStore._menus.principal));
         this.creeMenu(this.piedEl, ServiceStore._menus.pied);
     };
-    /** Caler les comportement du menu mobile */
-    toggleMobile(){
-        console.log(document.width);
-        if(document.body.clientWidth < 981) this.mobileEl.classList.toggle('ouvert');
-    }
-    /** Indiquer une route en utilisant un événement */
-    setRoute(r){
-        this.dispatchEvent(new CustomEvent('route', {detail:{route:r}}))
-    }
     /** Animations */
     animationInit() {
         const s = document.querySelectorAll("#contenu > section");

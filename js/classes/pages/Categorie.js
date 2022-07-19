@@ -3,10 +3,9 @@ import { CustomPage } from "./DOM/Page.js";
 export class CustomCategorie extends CustomPage {
     constructor(cat, alias, style=null){
         super(cat);
-        this.setCat(cat, this.cols[0]);
+        this.setCat(cat, 1);
         console.log(cat);
         
-        this.setStyle(1, 0, style);
-        this.setArticles(cat.Articles.data, this.cols[1], 1);
+        this.setArticles(cat.Articles.data);
     }
 }
