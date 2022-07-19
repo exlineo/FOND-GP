@@ -7,10 +7,10 @@ const ENV = {
 }
 /** Paramètres de connexion pour la production */
 const PROD = {
-    resturl: '//fgp.exlineo.com/api/',
-    graphurl : '//fgp.exlineo.com/graphql',
-    servurl: '//fgp.exlineo.com',
-    absurl:'//www.exlineo.com/fgp'
+    resturl: 'http://fgp.exlineo.com/api/',
+    graphurl : 'http://fgp.exlineo.com/graphql',
+    servurl: 'http://fgp.exlineo.com',
+    absurl:'http://www.exlineo.com/fgp'
 }
 
 export function setENV(){
