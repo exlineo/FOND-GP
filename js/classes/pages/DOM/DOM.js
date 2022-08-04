@@ -126,8 +126,9 @@ export class CustomDOM extends CustomPopup {
      * Ecrire un menu ou un sous menu
      * @param {HTMLElement} el Elment HTML dans lequel écrire le menu
      * @param {Array<Menu>} sm Liste des liens à afficher dans le menu
+     * @param {HTMLElement} cible Element HTML dans lequel écrire le contenu
      */
-    creeMenu(el, sm) {
+    creeMenu(el, sm, cible=null) {
         const ul = document.createElement('ul');
         sm.forEach(m => {
             let li = document.createElement('li');
@@ -137,7 +138,7 @@ export class CustomDOM extends CustomPopup {
             a.setAttribute('href', m.Lien.Url);
             a.addEventListener('click', (e) => {
                 e.preventDefault();
-                this.setContent(m);
+                this.setContent(m, cible);
                 this.toggleMobile();
             });
             li.appendChild(a);
@@ -177,6 +178,7 @@ export class CustomDOM extends CustomPopup {
     /** Créer le contenu des pages en fonction des paramètres du menu */
     setContent(m, cible=null){
         const el = cible ? cible : this.cols[this.col];
+        console.log(el, m);
         if (m.Lien.Cible != 'blank') {
             if (m.Template.data?.attributes.Alias == 'categorie-integree') {
                 this.setArticles(m.Categorie.data.attributes.Articles.data, el);

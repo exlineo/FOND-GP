@@ -112,6 +112,7 @@ nav a{
 nav.sous-menu{
   margin:50px 0 0 0;
   border-top:none;
+  width:90%;
 }
 nav.sous-menu ul{
   padding:10px 40px;
@@ -151,13 +152,18 @@ nav li:hover > ul{
 nav li:hover > ul a{
   margin:0;
 }
+main > header{
+}
 main > header > nav{
+  display: flex;
+  flex-flow: column;
   margin-top:-2px;
 }
 main > header > nav > ul{
-  padding:10px 60px;
+  padding:0 60px 10px;
   border-bottom: 2px solid var(--s);
   margin-bottom:1px;
+  align-items: flex-end;
 }
 main > footer {
   font-size: 11px;
@@ -212,6 +218,7 @@ article > div > label{
   overflow-x: hidden;
   align-items: center;
   box-sizing: border-box;
+  flex-flow:column nowrap;
 }
 #contenu > section > article{
   margin:auto;
@@ -253,17 +260,18 @@ ul > li {
 }
 .logo{
   display:flex;
-  width:100px;
-  height:100px;
   align-self: center;
-  background-color:rgba(0,0,0,.2);
-  padding:10px 5px;
+  padding:0;
+  margin:0;
+}
+.logo:before, .logo:after{
+  content:'';
 }
 .logo a {
   margin:0 auto;
 }
 .logo img{
-  max-width:80px;
+  /* width:100%; */
 }
 figure{
   width:100%;

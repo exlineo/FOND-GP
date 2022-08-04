@@ -4,8 +4,6 @@ export class CustomCategorie extends CustomPage {
     constructor(cat, alias, style=null){
         super(cat);
         this.setCat(cat, 1);
-        console.log(cat);
-        
         this.setArticles(cat.Articles.data);
     }
 }

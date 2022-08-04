@@ -8,7 +8,7 @@ export class CustomArticle extends CustomDOM {
     };
 
     /** Créer un article */
-    setArticle(a, toggle=1) {
+    setArticle(a) {
         let article = this.setEl('article');
         let obj = {}; // Objet d'initialisation
 
@@ -29,10 +29,10 @@ export class CustomArticle extends CustomDOM {
         return article;
     };
     /** Créer un article ouvert avec une popup (pour les références) (un cartel ave une image) */
-    setRef(a, toggle=1) {
+    setRef(a) {
         let article = this.setEl('article');
         this.setAttr(article, { name: 'id', value: a.alias });
-        article.className = this.setAnimStyle(toggle);
+        article.className = this.setAnimStyle(this.cols[this.col]);
 
         let div = this.setEl('div');
 
