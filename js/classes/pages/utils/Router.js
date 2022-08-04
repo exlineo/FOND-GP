@@ -28,11 +28,15 @@ export class CustomRouter {
     */
     setPage(page){
         let tmp = 'categorie';
+        // Identifier l'instance en lien avec la page
         this.instances.forEach(i => {
             if(i.alias == page.Template.data?.attributes.Alias) tmp = i;
         });
+        // Récupérer le style de la page si présent
         const style = page.Style.data ? page.Style.data.attributes.Alias : null;
-        this.instance = new tmp.classe(page.Categorie.data.attributes, page.Lien.Alias, style);
+        // Attribuer une catégorie si utile, sinon, rien
+        const categorie = page.Categorie.data ? page.Categorie.data.attributes : null;
+        this.instance = new tmp.classe(categorie, page.Lien.Alias, style);
     }
     /** Retrouver une classe en fonction du nom du template et inscrire l'instance dedans
      */

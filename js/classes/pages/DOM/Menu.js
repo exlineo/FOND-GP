@@ -17,7 +17,7 @@ export class Menu extends CustomDOM {
         this.principalEl = document.querySelector('main>header>nav');
         this.piedEl = document.querySelector('main>footer>nav');
         this.burger = document.querySelector('button.burger');
-        this.mobileEl = document.querySelector('nav.mobile');
+        this.mobileEl = document.querySelector('nav#mobile');
         this.router = new CustomRouter();
         // Menus créés une fois que les données ont été chagée et stockées dans le service
         this.setStructureMenus();
@@ -37,8 +37,6 @@ export class Menu extends CustomDOM {
     /** Animations */
     animationInit() {
         const s = document.querySelectorAll("#contenu > section");
-        // s[0].className = 'disparait-gauche';
-        // s[1].className = 'disparait-droite';
         s[0].className = '';
         s[1].className = '';
     }

@@ -22,7 +22,7 @@ button.burger:hover{
     border-color:var(--t);
     transform:scale(1.1);
 }
-nav.mobile{
+nav#mobile{
     display:none;
     position:absolute;
     background-color:var(--transparent);
@@ -30,10 +30,10 @@ nav.mobile{
     z-index:10;
     width:90vw;
 }
-nav.mobile ul {
+nav#mobile ul {
     flex-flow:column nowrap;
     background-color: var(--clair);
-    margin:10px auto;
+    margin:0 auto;
 }
 .ouvert{
     display:flex !important;
@@ -47,17 +47,18 @@ nav.mobile ul {
     button.burger{
         display:flex;
     }
-    section.mobile{
+    section#mobile{
         display:flex;
     }
     #contenu {
         flex-flow:column nowrap;
-        overflow-x:hidden;
-        overflow-y:auto;
+        /* overflow-x:hidden; */
+        overflow:auto;
     }
     #contenu > section{
         width:100vw;
         overflow:hidden;
+        height:auto;
     }
     #contenu > section:nth-child(1) nav.sous-menu {
         align-self: flex-start;
