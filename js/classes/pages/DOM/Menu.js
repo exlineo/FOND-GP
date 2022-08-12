@@ -6,19 +6,11 @@ import { ServiceStore } from '../../data/Service.js';
 export class Menu extends CustomDOM {
     el; // Elément HTML du menu
     liens = []; // Liste des liens du menu
-    categorie; // Catégorie de contenus à afficher dan une page
-    mobileEl; // Référence HTML du menu mobile
-    burger; // Bouton pour ouvrir le menu mobile
     router; // Gestion des routes
     mobile = false;
 
     constructor() {
         super();
-        this.principalEl = document.querySelector('main>header>nav');
-        this.piedEl = document.querySelector('main>footer>nav');
-        this.burger = document.querySelector('button.burger');
-        this.mobileEl = document.querySelector('nav#mobile');
-        this.router = new CustomRouter();
         // Menus créés une fois que les données ont été chagée et stockées dans le service
         this.setStructureMenus();
         this.burger.addEventListener('click', (e) => {
@@ -27,12 +19,14 @@ export class Menu extends CustomDOM {
     };
     /** Ecrire les menus dans le DOM */
     setStructureMenus() {
-        this.creeMenu(this.principalEl, this.triMenus(ServiceStore._menus.principal));
-        this.creeMenu(this.mobileEl, this.triMenus(ServiceStore._menus.principal));
+        this.creeMenu(this.principalEl, this.triMenu(ServiceStore._menus.principal));
+        this.creeMenu(this.mobileEl, this.triMenu(ServiceStore._menus.principal));
         this.creeMenu(this.piedEl, ServiceStore._menus.pied);
         // const el = this.principalEl.firstChild.childNodes[Math.floor(this.principalEl.firstChild.childNodes.length/2)];
         // console.log(el, Math.floor(this.principalEl.firstChild.childNodes.length/2));
         this.setLogo(this.principalEl);
+        // Créer un router, il va initier le contenu
+        this.router = new CustomRouter();
     };
     /** Animations */
     animationInit() {

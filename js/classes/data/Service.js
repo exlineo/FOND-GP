@@ -23,7 +23,12 @@ export class ServiceStore {
     data.forEach(t => {
       let d = t.attributes;
       d.id = t.id;
-      const m = d.Rattachement.data.attributes.Alias;
+      let m = '/';
+      try{
+        m = d.Rattachement.data.attributes.Alias;
+      }catch(er){
+        dispatchEvent(new CustomEvent('MSG', { detail: { titre:'Erreur de routage', msg: er } }))
+      }
       if (!menus.hasOwnProperty(m)) {
         menus[m] = [];
       }
@@ -32,13 +37,16 @@ export class ServiceStore {
     ServiceStore._menus = menus;
   }
   /** Créer les sous menus */
-  triMenus(menu) {
-    menu.forEach(m => {
-      if (m.Parent.data) {
-        const parent = menu[m.Parent.data.id - 1];
-        if (!parent['enfants']) parent['enfants'] = [];
-        parent.enfants.push(m);
-      };
-    })
-  }
+  // triMenus(menu) {
+  //   menu.forEach(m => {
+  //     if (m.Parent.data) {
+  //       const parent = menu[m.Parent.data.id - 1];
+  //       if (!parent['enfants']) parent['enfants'] = [];
+  //       parent.enfants.push(m);
+  //     };
+  //   });
+  //   menu.sort(()=>{
+
+  //   })
+  // }
 }

@@ -7,9 +7,19 @@ export class CustomDOM extends CustomPopup {
     style; // Le style a appliquer à une page
     cols = []; // Ls colonnes à ajouter aux pages
     col = 1; // Déterminer la valeur de la colonne par défaut pour l'affichage des contenus
+    categorie; // Catégorie de contenus à afficher dan une page
+    mobileEl; // Référence HTML du menu mobile
+    burger; // Bouton pour ouvrir le menu mobile
+    msg; // Ecrire un message d'alerte
 
     constructor() {
         super();
+
+        this.principalEl = document.querySelector('main>header>nav');
+        this.piedEl = document.querySelector('main>footer>nav');
+        this.burger = document.querySelector('button.burger');
+        this.mobileEl = document.querySelector('nav#mobile');
+        this.msg = document.querySelector('#msg');
 
         this.cols.push(document.querySelector('#contenu > section:nth-child(1)'));
         this.cols.push(document.querySelector('#contenu > section:nth-child(2)'));
@@ -17,6 +27,12 @@ export class CustomDOM extends CustomPopup {
         this.md = new showdown.Converter();
         this.md.setOption('simplifiedAutoLink', 'true');
         this.md.setOption('openLinksInNewWindow', 'true');
+        // Afficher des informations lors d'une erreur
+        addEventListener('MSG', (ev) => {
+            console.log(ev.detail);
+            // this.setPage(ev.detail.route);
+            if(!document.body.querySelector('#msg')) this.setMsg(ev.detail);
+        })
     }
     /** Créer un élément HTML : el = le nom de l'élément, target = l'id de l'élément cible, ...attr = la liste des éléments */
     setEl(el, ...attr) {
@@ -100,7 +116,6 @@ export class CustomDOM extends CustomPopup {
             }
         )
     }
-
     /** Formulaires */
     setInput(champ) {
         const field = document.createElement('fieldset');
@@ -130,6 +145,7 @@ export class CustomDOM extends CustomPopup {
      */
     creeMenu(el, sm, cible = null) {
         const ul = document.createElement('ul');
+        sm = this.triOrdreMenu(sm);
         sm.forEach(m => {
             let li = document.createElement('li');
             let a = document.createElement('a');
@@ -145,15 +161,14 @@ export class CustomDOM extends CustomPopup {
             ul.appendChild(li);
             // Créer les sous menus
             if (m['enfants']) {
-                this.creeMenu(li, m.enfants)
+                this.creeMenu(li, m.enfants);
             }
         });
         el.appendChild(ul);
-        // Afficher les contenus de la page par défaut sur les sous-menus
-        // if(cible) this.setContent(sm[0], cible);
     }
     /** Créer les sous menus */
-    triMenus(menu) {
+    triMenu(menu) {
+        // Organiser les sous-menus
         menu.forEach((m, i) => {
             if (m.Parent.data) {
                 const parent = menu.filter(s => s.id == m.Parent.data?.id)[0];
@@ -163,6 +178,11 @@ export class CustomDOM extends CustomPopup {
             };
         });
         return menu;
+    }
+    /** Mettre les menus en ordre */
+    triOrdreMenu(menu) {
+        const ordre = menu.sort((a, b) => a.Ordre - b.Ordre);
+        return ordre;
     }
     /** Créer un sous menu */
     setSousMenu(menu) {
@@ -174,7 +194,7 @@ export class CustomDOM extends CustomPopup {
         el.appendChild(div);
         el.prepend(nav);
 
-        this.creeMenu(nav, this.triMenus(menu), div);
+        this.creeMenu(nav, this.triMenu(menu), div);
         this.setContent(menu[0], div);
     }
     /** Créer le contenu des pages en fonction des paramètres du menu */
@@ -182,18 +202,16 @@ export class CustomDOM extends CustomPopup {
         const el = cible ? cible : this.cols[this.col];
         const categorie = m.Categorie.data.attributes;
         el.innerHTML = '';
-        console.log(el, m);
         if (m.Lien.Cible != 'blank') {
             if (m.Template.data?.attributes.Alias == 'categorie-integree') {
                 this.setArticles(categorie.Articles.data, el);
             } else if (m.Template.data?.attributes.Alias == 'formulaire') {
                 this.setForm(categorie.Formulaire.data, el);
             } else {
-                this.setRoute(m);
+                dispatchEvent(new CustomEvent('ROUTE', { detail: { route: m } }))
                 history.pushState({ key: m.Lien.Url }, '', m.Lien.Url);
             }
-            console.log(m);
-            if(categorie.Articles.data.length > 0) this.setStyle(m.Style.data?.attributes.Alias);
+            if (categorie.Articles.data.length > 0) this.setStyle(m.Style.data?.attributes.Alias);
         } else {
             window.open(m.Lien.Url, '_blank');
         }
@@ -202,10 +220,6 @@ export class CustomDOM extends CustomPopup {
     setAnimStyle(toggle) {
         if (toggle) return 'anim-gauche';
         return 'anim-droite';
-    }
-    /** Indiquer une route en utilisant un événement */
-    setRoute(r) {
-        dispatchEvent(new CustomEvent('route', { detail: { route: r } }))
     }
     /** LES SECTIONS */
     /** Ecrire le contenu sur la gauche de la colonne */
@@ -230,9 +244,17 @@ export class CustomDOM extends CustomPopup {
     }
     /** Ajouter un style à une colonne d'article */
     setStyle(style = null) {
-        console.log(style);
         style ? this.cols[this.col].className = style + ' blog' : this.cols[this.col].className = 'blog';
         this.cols[this.col == 0 ? 1 : 0].className = '';
+    }
+    /** Ercire un message d'alerte */
+    setMsg(detail) {
+        const div = this.setEl('div');
+        div.id = 'msg';
+        div.appendChild(this.setText('h5', detail.titre));
+        div.appendChild(this.setText('p', detail.msg));
+        document.body.appendChild(div);
+        setTimeout(() => div.remove(), 5000);
     }
     /** Caler les comportement du menu mobile */
     toggleMobile() {

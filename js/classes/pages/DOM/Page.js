@@ -12,8 +12,6 @@ export class CustomPage extends CustomArticle {
     /** Créer les articles de la page */
     setArticles(articles, cible=null) {
         const el = !cible ? this.cols[this.col] : cible;
-        console.log(el);
-        // el.innerHTML = '';
         articles.forEach(a => el.appendChild(this.setArticle(a.attributes)));
     }
     /** Trier les articles */
