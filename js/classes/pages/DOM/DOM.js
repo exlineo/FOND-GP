@@ -93,6 +93,13 @@ export class CustomDOM extends CustomPopup {
         });
         return bouton;
     }
+    /** Créer un bouton dans un formulaire */
+    setFormBouton(type, text){
+        const btn = document.createElement('input');
+        btn.type = type;
+        btn.value = text;
+        return btn;
+    }
     /** Créer un bouton avec un lien */
     setPopup(lien) {
         let bouton = document.createElement('button');
@@ -106,7 +113,7 @@ export class CustomDOM extends CustomPopup {
     setLabel(infos) {
         let label = document.createElement('label');
         label.textContent = infos;
-        return infos;
+        return label;
     }
     /** Ecrire les attributs sur la balise */
     setAttr(e, ...attr) {
@@ -174,7 +181,9 @@ export class CustomDOM extends CustomPopup {
                 const parent = menu.filter(s => s.id == m.Parent.data?.id)[0];
                 if (!parent.hasOwnProperty('enfants')) parent['enfants'] = [];
                 parent.enfants.push(m);
+                // menu.splice(i,1);
                 delete menu[i];
+                // menu.length = menu.length-1;
             };
         });
         return menu;
@@ -200,18 +209,19 @@ export class CustomDOM extends CustomPopup {
     /** Créer le contenu des pages en fonction des paramètres du menu */
     setContent(m, cible = null) {
         const el = cible ? cible : this.cols[this.col];
-        const categorie = m.Categorie.data.attributes;
+        console.log(m);
+        const categorie = m.Categorie.data ? m.Categorie.data.attributes : null;
         el.innerHTML = '';
         if (m.Lien.Cible != 'blank') {
             if (m.Template.data?.attributes.Alias == 'categorie-integree') {
                 this.setArticles(categorie.Articles.data, el);
             } else if (m.Template.data?.attributes.Alias == 'formulaire') {
-                this.setForm(categorie.Formulaire.data, el);
+                this.setForm(m.Formulaire.data.attributes, el);
             } else {
                 dispatchEvent(new CustomEvent('ROUTE', { detail: { route: m } }))
                 history.pushState({ key: m.Lien.Url }, '', m.Lien.Url);
             }
-            if (categorie.Articles.data.length > 0) this.setStyle(m.Style.data?.attributes.Alias);
+            if (categorie && categorie.Articles.data.length > 0) this.setStyle(m.Style.data?.attributes.Alias);
         } else {
             window.open(m.Lien.Url, '_blank');
         }
@@ -228,6 +238,8 @@ export class CustomDOM extends CustomPopup {
         const el = this.cols[n == 0 ? 1 : 0];
         el.innerHTML = '';
         this.cols[n].innerHTML = '';
+        el.className = '';
+        console.log(el);
         const art = this.setEl('article');
         art.classList.add('categorie'); // Affichage spécifique de l'article
         if (cat.Titre) art.appendChild(this.setText('h1', cat.Titre));
@@ -236,6 +248,27 @@ export class CustomDOM extends CustomPopup {
         if (cat.Description) art.appendChild(this.setHtml('div', cat.Description));
 
         el.appendChild(art);
+    }
+    /** Créer un formulaire à partie des données de la base */
+    setForm(form, el){
+        const formEl = this.setEl('form');
+        const titre = this.setText('h2', form.Titre);
+        const descr = this.setHtml('p', form.Description);
+        console.log(form, form.champ);
+
+        formEl.appendChild(titre);
+        formEl.appendChild(descr);
+        form.champ.forEach( c => {
+            formEl.appendChild(this.setInput(c));
+        });
+
+        const field = document.createElement('fieldset');
+        field.className = 'h c';
+        field.appendChild(this.setFormBouton('reset', 'Annuler'))
+        field.appendChild(this.setFormBouton('submit', 'Valider'))
+        formEl.appendChild(field);
+        
+        el.appendChild(formEl);
     }
     /** Définir la mise en page avec un nombre de colonnes */
     setCol() {

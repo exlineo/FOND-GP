@@ -146,6 +146,25 @@ export class QL {
             }
           }
         }
+        Formulaire{
+          data{
+            attributes{
+              Titre
+              Alias
+              Description
+              Email
+              Destination
+              champ{
+                Titre
+              	Infos
+                Aide
+                Type
+                Options
+                Obligatoire
+              }
+            }
+          }
+        }
         Style{
           data{
             attributes{
