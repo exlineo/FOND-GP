@@ -1,5 +1,3 @@
-import { CustomArticle } from "./pages/DOM/Article.js";
-// import { Menu } from "./pages/DOM/Menu.js";
 import { Graph } from "./data/Graph.js";
 
 export class Init{

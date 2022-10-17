@@ -11,6 +11,7 @@ export class CustomDOM extends CustomPopup {
     mobileEl; // Référence HTML du menu mobile
     burger; // Bouton pour ouvrir le menu mobile
     msg; // Ecrire un message d'alerte
+    enchasse; // Ecrire les contenus dans une div dans la page (pour les sous menus)
 
     constructor() {
         super();
@@ -29,7 +30,6 @@ export class CustomDOM extends CustomPopup {
         this.md.setOption('openLinksInNewWindow', 'true');
         // Afficher des informations lors d'une erreur
         addEventListener('MSG', (ev) => {
-            console.log(ev.detail);
             // this.setPage(ev.detail.route);
             if(!document.body.querySelector('#msg')) this.setMsg(ev.detail);
         })
@@ -181,9 +181,7 @@ export class CustomDOM extends CustomPopup {
                 const parent = menu.filter(s => s.id == m.Parent.data?.id)[0];
                 if (!parent.hasOwnProperty('enfants')) parent['enfants'] = [];
                 parent.enfants.push(m);
-                // menu.splice(i,1);
                 delete menu[i];
-                // menu.length = menu.length-1;
             };
         });
         return menu;
@@ -193,23 +191,31 @@ export class CustomDOM extends CustomPopup {
         const ordre = menu.sort((a, b) => a.Ordre - b.Ordre);
         return ordre;
     }
-    /** Créer un sous menu */
+    /** Créer un sous menu
+     * @param m Sous menu à afficher
+    */
     setSousMenu(menu) {
         const el = this.cols[this.col];
         el.innerHTML = '';
         const nav = document.createElement('nav');
         const div = document.createElement('div');
         nav.className = 'sous-menu';
+        div.setAttribute('id', 'enchasse');
         el.appendChild(div);
         el.prepend(nav);
 
         this.creeMenu(nav, this.triMenu(menu), div);
+        this.enchasse = div;
         this.setContent(menu[0], div);
     }
-    /** Créer le contenu des pages en fonction des paramètres du menu */
+    /** Créer le contenu des pages en fonction des paramètres du menu
+     * @param m Informations sur le lien cliqué (la page)
+     * @param cible Savoir où la page doit écrire son contenu
+     */
     setContent(m, cible = null) {
-        const el = cible ? cible : this.cols[this.col];
-        console.log(m);
+        const el = this.setCible(cible);
+        
+        console.log(m, el);
         const categorie = m.Categorie.data ? m.Categorie.data.attributes : null;
         el.innerHTML = '';
         if (m.Lien.Cible != 'blank') {
@@ -225,21 +231,36 @@ export class CustomDOM extends CustomPopup {
         } else {
             window.open(m.Lien.Url, '_blank');
         }
+        // this.enchasse = null;
     }
-    /** Add style to article to animate it */
+    /** Renvoyer la cible pour l'écriture d'un contenu */
+    setCible(cible=null){
+        if(this.enchasse){
+            return this.enchasse;
+        }else if(cible){
+            return cible;
+        }else{
+            return this.cols[this.col];
+        }
+    }
+    /** Add style to article to animate it
+     * @param toggle Booléen indiquant quelle animation déclencher
+    */
     setAnimStyle(toggle) {
         if (toggle) return 'anim-gauche';
         return 'anim-droite';
     }
     /** LES SECTIONS */
-    /** Ecrire le contenu sur la gauche de la colonne */
+    /** Ecrire le contenu sur la gauche de la colonne
+     * @param cat Catégorie à décortiquer pour l'afficher
+     * @param n Numéro de la colonne dans laquelle afficher la catégorie
+    */
     setCat(cat, n) {
         this.col = n;
         const el = this.cols[n == 0 ? 1 : 0];
         el.innerHTML = '';
         this.cols[n].innerHTML = '';
         el.className = '';
-        console.log(el);
         const art = this.setEl('article');
         art.classList.add('categorie'); // Affichage spécifique de l'article
         if (cat.Titre) art.appendChild(this.setText('h1', cat.Titre));
@@ -249,12 +270,14 @@ export class CustomDOM extends CustomPopup {
 
         el.appendChild(art);
     }
-    /** Créer un formulaire à partie des données de la base */
+    /** Créer un formulaire à partir des données de la base
+     * @param form Les données du formulaire à traiter
+     * @param el Elément HTML dans lequel écrire le formulaire
+    */
     setForm(form, el){
         const formEl = this.setEl('form');
         const titre = this.setText('h2', form.Titre);
         const descr = this.setHtml('p', form.Description);
-        console.log(form, form.champ);
 
         formEl.appendChild(titre);
         formEl.appendChild(descr);
@@ -289,7 +312,7 @@ export class CustomDOM extends CustomPopup {
         document.body.appendChild(div);
         setTimeout(() => div.remove(), 5000);
     }
-    /** Caler les comportement du menu mobile */
+    /** Caler les comportements du menu mobile */
     toggleMobile() {
         if (document.body.clientWidth < 981) {
             this.mobileEl.classList.toggle('ouvert');

@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "..\\BACK-STRAPI"
+		},
+		{
+			"path": "..\\FONDS-GP-COLLECTIONS"
 		}
 	],
 	"settings": {

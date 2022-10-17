@@ -14,7 +14,6 @@ export class CustomRouter {
 
             let path = new URL(window.location.href).pathname;
             const h = path.split('/');
-            console.log(h);
         });
         // Lancé à l'initialisation des menus (Graph.js)
         addEventListener('LOAD', ev => {
@@ -56,8 +55,6 @@ export class CustomRouter {
         // Identifier l'adresse actuelle
         let path = new URL(window.location.href).pathname;
         const h = path.split('/');
-        console.log(h);
-
         for (let m in ServiceStore._menus) {
             console.log(m);
         }
@@ -67,7 +64,6 @@ export class CustomRouter {
     */
     setPage(page) {
         let tmp = 'categorie';
-        console.log(page);
         // Identifier l'instance en lien avec la page
         this.instances.forEach(i => {
             if (page.Template) {

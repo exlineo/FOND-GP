@@ -34,6 +34,7 @@ export class Menu extends CustomDOM {
         s[0].className = '';
         s[1].className = '';
     }
+    /** Animer les contenus de la page */
     animationPage() {
         const s = document.querySelectorAll("#contenu > section");
         s[0].className = 'apparait-gauche';
@@ -41,7 +42,7 @@ export class Menu extends CustomDOM {
     }
     /** Ajouter le logo */
     setLogo(el){
-        const img = this.setImg('/images/Logo_fondsGP.png', {alt:"Logo du fonds de doatation Gérard Perrier"});
+        const img = this.setImg('./images/Logo_fondsGP.png', {alt:"Logo du fonds de doatation Gérard Perrier"});
         const lien = document.createElement('a');
         lien.setAttribute('title', "Fonds de dotation Gérard Perrier, revenir à l'accueil");
         lien.className = 'logo';
