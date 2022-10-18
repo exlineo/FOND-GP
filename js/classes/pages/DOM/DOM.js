@@ -93,6 +93,17 @@ export class CustomDOM extends CustomPopup {
         });
         return bouton;
     }
+    /** Créer un lien */
+    setLien(l){
+        const a = document.createElement('a');
+        l.Description ? a.setAttribute('alt', l.Description) : a.setAttribute('alt', l.Titre);
+        a.setAttribute('title', l.Titre);
+        if(l.Cible) a.target = l.Cible;
+        a.href = l.Url;
+        a.className = 'lien';
+        a.textContent = l.Titre;
+        return a;
+    }
     /** Créer un bouton dans un formulaire */
     setFormBouton(type, text){
         const btn = document.createElement('input');

@@ -17,6 +17,8 @@ export class CustomArticle extends CustomDOM {
         if (a.Intro) { obj.intro = this.setHtml('div', a.Intro) };
         if (a.MediaContenu.data) { obj.imageA = this.setFigure(a.MediaContenu.data.attributes) };
         if (a.Contenu) { obj.contenu = this.setHtml('div', a.Contenu) };
+        
+        if(a.Liens) { a.Liens.forEach(l => obj[l.Alias] = this.setLien(l))}
 
         for (let i in obj) {
             article.appendChild(obj[i]);

@@ -19,33 +19,6 @@ export class QL {
                 Description
                 Cible
               }
-              Article{
-                data{
-                  id
-                  attributes{
-                    Titre
-                    Alias
-                    Intro
-              Contenu
-              MediaIntro{
-                data{
-                  attributes{
-                    url
-                    caption
-                  } 
-                }
-              }
-              MediaContenu{
-                data{
-                  attributes{
-                    url
-                    caption
-                  } 
-                }
-              }
-            }
-          }
-        }
         Categorie{
           data{
             attributes{
@@ -86,6 +59,13 @@ export class QL {
                         } 
                       }
                     }
+                    Liens{
+                      Titre
+                      Url
+                      Description
+                      Cible
+                      Alias
+                    }
                   }
                 }
               }
@@ -94,31 +74,6 @@ export class QL {
                   attributes{
                     Titre
                     Alias
-                  }
-                }
-              }
-              Cartes{
-                data{
-                  attributes{
-                    Titre
-                    Alias
-                    Description
-                    Coordonnees
-                    Lien{
-                      Titre
-                      Url
-                      Description
-                      Cible
-                    }
-                    Localisation{
-                      Titre
-                      Latitude
-                      Longitude
-                    }
-                    Type{
-                      id
-                      Types
-                    }
                   }
                 }
               }
