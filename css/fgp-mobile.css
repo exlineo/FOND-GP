@@ -41,8 +41,14 @@ nav#mobile ul {
 }
   /* MEDIA QUERIES */
 @media screen and (max-width: 980px) {
+    main{
+        width:100vw;
+    }
     main > header > nav:nth-child(1){
         display:none;
+    }
+    h1{
+        margin-top:15px;
     }
     button.burger{
         display:flex;
@@ -52,13 +58,13 @@ nav#mobile ul {
     }
     #contenu {
         flex-flow:column nowrap;
-        /* overflow-x:hidden; */
+        height: 1600px;
         overflow:auto;
     }
     #contenu > section{
-        width:100vw;
-        overflow:hidden;
-        height:auto;
+        width: 100vw;
+        clear: both;
+        display: contents;
     }
     #contenu > section:nth-child(1) nav.sous-menu {
         align-self: flex-start;
@@ -68,5 +74,15 @@ nav#mobile ul {
     }
     #popup article{
         flex-flow:column wrap;
+    }
+    main > header > nav > ul {
+        align-items:flex-start;
+    }
+    nav li > ul {
+        opacity: 1;
+        position: relative;
+        pointer-events:auto;
+        text-align: left;
+        padding-left: 20px;
     }
   }

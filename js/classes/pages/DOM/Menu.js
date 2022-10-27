@@ -47,7 +47,6 @@ export class Menu extends CustomDOM {
         lien.setAttribute('title', "Fonds de dotation Gérard Perrier, revenir à l'accueil");
         lien.className = 'logo';
         lien.href = '/';
-        console.log(img);
         lien.appendChild(img);
         el.prepend(lien);
     }

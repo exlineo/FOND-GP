@@ -30,9 +30,6 @@ export class Graph extends QL {
             this.s.setMenus(d.data.menus.data);
             this.menu = new Menu();
             dispatchEvent(new CustomEvent('LOAD'));
-            console.log(d);
-            // Enregistrer les données
-            // this.storeData('menus', this.listeCategories);
         })
         .catch(console.error);
     };

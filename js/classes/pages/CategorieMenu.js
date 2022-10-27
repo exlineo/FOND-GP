@@ -19,7 +19,6 @@ export class CustomCategorieMenuGauche extends CustomPage {
     constructor(cat, articles, alias, style){
         super(cat);
         document.getElementById('contenu').className = 'blog-menu-gauche';
-        console.log("Catégorie gauche", cat);
         this.setCat(cat, 0);
 
         // Ecriture des articles et du sous-menu

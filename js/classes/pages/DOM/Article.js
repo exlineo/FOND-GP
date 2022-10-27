@@ -9,7 +9,6 @@ export class CustomArticle extends CustomDOM {
     /** Récupérer la liste des articles en fonction des catégories */
     /** Créer un article */
     setArticle(a) {
-        console.log("article", a);
         let article = this.setEl('article');
         let obj = {}; // Objet d'initialisation
         const intro = this.setEl('div');

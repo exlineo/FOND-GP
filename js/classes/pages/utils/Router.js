@@ -17,7 +17,6 @@ export class CustomRouter {
         });
         // Lancé à l'initialisation des menus (Graph.js)
         addEventListener('LOAD', ev => {
-            console.log("Loader initié");
             this.initRoute();
         });
         // Initialisé lors d'un chagement de route (pour détecter les historiques)
@@ -32,7 +31,6 @@ export class CustomRouter {
         // Identifier l'adresse actuelle
         let path = new URL(window.location.href).pathname;
         const h = path.split('/');
-        console.log(h);
         let adr = {};
         ServiceStore._menus.principal.forEach(l => {
             if (l.Lien.Url.indexOf(h[1]) != -1) {
@@ -40,7 +38,6 @@ export class CustomRouter {
             } else if (l.enfants) {
                 // return l.enfants.filter(e => e.Lien.Url.indexOf(h[1]) != -1)[0];
                 l.enfants.forEach(e => {
-                    // console.log(e);
                     if (e.Lien.Url.indexOf(h[1]) != -1) {
                         adr = e;
                     }
@@ -55,9 +52,9 @@ export class CustomRouter {
         // Identifier l'adresse actuelle
         let path = new URL(window.location.href).pathname;
         const h = path.split('/');
-        for (let m in ServiceStore._menus) {
-            console.log(m);
-        }
+        // for (let m in ServiceStore._menus) {
+        //     console.log(m);
+        // }
     }
     /** Créer la page avec les contenus
     * @param {Lien} lien Objet contenant toutes les informations du lien et de la page
@@ -74,9 +71,7 @@ export class CustomRouter {
         const style = page.Style.data ? page.Style.data.attributes.Alias : null;
         // Attribuer une catégorie si utile, sinon, rien
         const categorie = page.Categorie.data ? page.Categorie.data.attributes : null;
-        // let articles = []
-        const articles = page.Articles.data ? page.Articles.data.map(a => a.attributes.Articles.data).flat() : null;
-        // console.log(categorie, articles);
+        const articles = page.Articles.data && Array.isArray(page.Articles.data) ? page.Articles.data.map(a => a.attributes.Articles.data).flat() : null;
         this.instance = new tmp.classe(categorie, articles, page.Lien.Alias, style);
     }
     /** Retrouver une classe en fonction du nom du template et inscrire l'instance dedans

@@ -657,7 +657,7 @@ button a:hover{
   text-align:justify;
 }
 section.blog{
-  align-items:center;
+  /* align-items:center; */
 }
 section.blog > article{
   margin:auto 0;

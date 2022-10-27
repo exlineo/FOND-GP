@@ -12,9 +12,8 @@ export class CustomPage extends CustomArticle {
     }
     /** Créer les articles de la page */
     setArticles(articles, cible=null) {
-        console.log("set articles", articles);
         const el = !cible ? this.cols[this.alterne()] : cible;
-        articles.forEach(a => el.appendChild(this.setArticle(a.attributes)));
+        if(Array.isArray(articles)) articles.forEach(a => el.appendChild(this.setArticle(a.attributes)));
     }
     /** Trier les articles */
     triArticles(paire) {

@@ -216,7 +216,6 @@ export class CustomDOM extends CustomPopup {
      * @param m Sous menu à afficher
     */
     setSousMenu(menu) {
-        console.log("Sous menu", menu);
         const el = this.cols[this.col];
         el.innerHTML = '';
         const nav = document.createElement('nav');
@@ -236,8 +235,6 @@ export class CustomDOM extends CustomPopup {
      */
     setContent(m, cible = null) {
         const el = this.setCible(cible);
-        
-        console.log(m, el);
         const articles = m.Articles.data ? m.Articles.data.map(a => a.attributes.Articles.data).flat() : null;
         el.innerHTML = '';
         if (m.Lien.Cible != 'blank') {
@@ -249,7 +246,6 @@ export class CustomDOM extends CustomPopup {
                 this.setForm(m.Formulaire.data.attributes, el);
             } else {
                 // Changement d'adresse
-                console.log("m", m);
                 dispatchEvent(new CustomEvent('ROUTE', { detail: { route: m } }))
                 history.pushState({ key: m.Lien.Url }, '', m.Lien.Url);
             }
