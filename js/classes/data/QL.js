@@ -2,6 +2,7 @@ export class QL {
   headers() {
     const head = new Headers();
     head.append('Content-type', 'application/json');
+    // head.append('Access-Control-Allow-Origin', '*');
     return head;
   }
   /** Récupérer les données globales du menu, catégories et articles */

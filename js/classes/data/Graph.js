@@ -23,7 +23,7 @@ export class Graph extends QL {
             method: 'POST',
             body: this.reqAll(),
             headers: this.headers(),
-            credentials: "include",
+            // credentials: "include",
             mode:'cors'
         }).then(data => {
             return data.json();
