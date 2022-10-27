@@ -22,7 +22,9 @@ export class Graph extends QL {
         fetch(setENV().graphurl, {
             method: 'POST',
             body: this.reqAll(),
-            headers: this.headers()
+            headers: this.headers(),
+            credentials: "include",
+            mode:'cors'
         }).then(data => {
             return data.json();
         }).then(d => {
