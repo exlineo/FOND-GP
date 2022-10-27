@@ -6,25 +6,32 @@ export class CustomArticle extends CustomDOM {
     constructor() {
         super();
     };
-
+    /** Récupérer la liste des articles en fonction des catégories */
     /** Créer un article */
     setArticle(a) {
+        console.log("article", a);
         let article = this.setEl('article');
         let obj = {}; // Objet d'initialisation
+        const intro = this.setEl('div');
 
-        if (a.MediaIntro.data) { obj.imageA = this.setFigure(a.MediaIntro.data.attributes) };
+        if (a.MediaIntro.data) {
+            intro.className = 'intro';
+            intro.appendChild(this.setFigure(a.MediaIntro.data.attributes));
+        };
         if (a.Titre) { obj.titre = this.setText('h2', a.Titre) };
-        if (a.Intro) { obj.intro = this.setHtml('div', a.Intro) };
+        if (a.Intro) { intro.appendChild(this.setHtml('div', a.Intro)); };
         if (a.MediaContenu.data) { obj.imageA = this.setFigure(a.MediaContenu.data.attributes) };
         if (a.Contenu) { obj.contenu = this.setHtml('div', a.Contenu) };
         
+        obj.intro = intro;
+
         if(a.Liens) { a.Liens.forEach(l => obj[l.Alias] = this.setLien(l))}
 
         for (let i in obj) {
             article.appendChild(obj[i]);
         }
 
-        let trait = document.createElement('hr');
+        const trait = document.createElement('hr');
         article.appendChild(trait);
         // Vérifier la présence de mailto
         this.sendMail(article);

@@ -34,6 +34,24 @@ export class QL {
                 }
               }
               Ordre
+            }
+          }
+        }
+        Articles{
+          data{
+            attributes{
+              Titre
+              Alias
+              Description
+              Media{
+                data{
+                  attributes{
+                    url
+                    caption
+                  } 
+                }
+              }
+              Ordre
               Articles{
                 data{
                   id
@@ -66,14 +84,6 @@ export class QL {
                       Cible
                       Alias
                     }
-                  }
-                }
-              }
-              Agendas{
-                data{
-                  attributes{
-                    Titre
-                    Alias
                   }
                 }
               }

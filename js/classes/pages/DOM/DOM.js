@@ -7,6 +7,8 @@ export class CustomDOM extends CustomPopup {
     style; // Le style a appliquer à une page
     cols = []; // Ls colonnes à ajouter aux pages
     col = 1; // Déterminer la valeur de la colonne par défaut pour l'affichage des contenus
+    contenu; // L'élement HTML qui contient le contenu du site
+    head; // Entete d'une page
     categorie; // Catégorie de contenus à afficher dan une page
     mobileEl; // Référence HTML du menu mobile
     burger; // Bouton pour ouvrir le menu mobile
@@ -22,6 +24,8 @@ export class CustomDOM extends CustomPopup {
         this.mobileEl = document.querySelector('nav#mobile');
         this.msg = document.querySelector('#msg');
 
+        this.contenu = document.getElementById('contenu');
+        this.head = document.querySelector('main > header > section');
         this.cols.push(document.querySelector('#contenu > section:nth-child(1)'));
         this.cols.push(document.querySelector('#contenu > section:nth-child(2)'));
 
@@ -33,6 +37,11 @@ export class CustomDOM extends CustomPopup {
             // this.setPage(ev.detail.route);
             if(!document.body.querySelector('#msg')) this.setMsg(ev.detail);
         })
+    }
+    /** Réinitialiser le contenu des pages pour éviter les doublons */
+    initEl(){
+        this.cols.forEach(c => c.innerHTML = '');
+        this.head.innerHTML = '';
     }
     /** Créer un élément HTML : el = le nom de l'élément, target = l'id de l'élément cible, ...attr = la liste des éléments */
     setEl(el, ...attr) {
@@ -63,6 +72,7 @@ export class CustomDOM extends CustomPopup {
     /** Créer une image avec arrière plan */
     setFigure(media) {
         const div = document.createElement('div');
+        div.className = 'figure';
         if (media.url) {
             const fig = document.createElement('figure');
             this.setAttr(fig, { name: 'style', value: `background-image:url(${setENV().servurl + media.url})` });
@@ -206,6 +216,7 @@ export class CustomDOM extends CustomPopup {
      * @param m Sous menu à afficher
     */
     setSousMenu(menu) {
+        console.log("Sous menu", menu);
         const el = this.cols[this.col];
         el.innerHTML = '';
         const nav = document.createElement('nav');
@@ -227,18 +238,22 @@ export class CustomDOM extends CustomPopup {
         const el = this.setCible(cible);
         
         console.log(m, el);
-        const categorie = m.Categorie.data ? m.Categorie.data.attributes : null;
+        const articles = m.Articles.data ? m.Articles.data.map(a => a.attributes.Articles.data).flat() : null;
         el.innerHTML = '';
         if (m.Lien.Cible != 'blank') {
             if (m.Template.data?.attributes.Alias == 'categorie-integree') {
-                this.setArticles(categorie.Articles.data, el);
+                // Ecire des articles dans une partie de la page
+                this.setArticles(articles, el);
             } else if (m.Template.data?.attributes.Alias == 'formulaire') {
+                // C'est un formulaire qu'il faut écrire
                 this.setForm(m.Formulaire.data.attributes, el);
             } else {
+                // Changement d'adresse
+                console.log("m", m);
                 dispatchEvent(new CustomEvent('ROUTE', { detail: { route: m } }))
                 history.pushState({ key: m.Lien.Url }, '', m.Lien.Url);
             }
-            if (categorie && categorie.Articles.data.length > 0) this.setStyle(m.Style.data?.attributes.Alias);
+            if (articles && articles.length > 0) this.setStyle(m.Style.data?.attributes.Alias);
         } else {
             window.open(m.Lien.Url, '_blank');
         }
@@ -269,17 +284,21 @@ export class CustomDOM extends CustomPopup {
     setCat(cat, n) {
         this.col = n;
         const el = this.cols[n == 0 ? 1 : 0];
-        el.innerHTML = '';
-        this.cols[n].innerHTML = '';
         el.className = '';
+        this.initEl();
         const art = this.setEl('article');
         art.classList.add('categorie'); // Affichage spécifique de l'article
         if (cat.Titre) art.appendChild(this.setText('h1', cat.Titre));
 
-        if (cat.Media.data) art.appendChild(this.setFigure(cat.Media.data.attributes));
+        if (cat.Media.data != null) art.appendChild(this.setFigure(cat.Media.data.attributes));
         if (cat.Description) art.appendChild(this.setHtml('div', cat.Description));
 
         el.appendChild(art);
+    }
+    setMainCat(cat){
+        this.initEl();
+        if (cat.Titre) this.head.appendChild(this.setText('h1', cat.Titre));
+        if (cat.Description) this.head.appendChild(this.setHtml('div', cat.Description));
     }
     /** Créer un formulaire à partir des données de la base
      * @param form Les données du formulaire à traiter

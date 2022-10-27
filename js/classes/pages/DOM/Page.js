@@ -4,6 +4,7 @@ import { CustomArticle } from "./Article.js";
 export class CustomPage extends CustomArticle {
     contenu; // La catégorie avec toutes les données dynamiques dedans
     articles = []; // La liste des articles de la page
+    alt = 0;
 
     constructor(contenu) {
         super();
@@ -11,7 +12,8 @@ export class CustomPage extends CustomArticle {
     }
     /** Créer les articles de la page */
     setArticles(articles, cible=null) {
-        const el = !cible ? this.cols[this.col] : cible;
+        console.log("set articles", articles);
+        const el = !cible ? this.cols[this.alterne()] : cible;
         articles.forEach(a => el.appendChild(this.setArticle(a.attributes)));
     }
     /** Trier les articles */
@@ -22,12 +24,17 @@ export class CustomPage extends CustomArticle {
             if (a % n == 1) this.articles.push(this.categorie.Articles.items[a]);
         };
     }
-    /** Afficher la liste des articles sélectionnés */
-    listeArticles(articles) {
-        articles.forEach(a => {
-            // Créer des articles complets ou juste l'intro en fonction de la mise en page
-            this.categorie.MiseEnPage.type != 'CustomPortfolio' ? localTarget.appendChild(this.setArticle(a)) : localTarget.appendChild(this.setRef(a));
-        })
+    /** Alterner les articles entre les colonnes */
+    alterne(){
+        this.alt == 0 ? this.alt = 1 : this.alt = 0;
+        return this.alt;
     }
+    /** Afficher la liste des articles sélectionnés */
+    // listeArticles(articles) {
+    //     articles.forEach(a => {
+    //         // Créer des articles complets ou juste l'intro en fonction de la mise en page
+    //         this.categorie.MiseEnPage.type != 'CustomPortfolio' ? localTarget.appendChild(this.setArticle(a)) : localTarget.appendChild(this.setRef(a));
+    //     })
+    // }
     
 }

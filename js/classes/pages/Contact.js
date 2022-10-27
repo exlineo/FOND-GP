@@ -9,7 +9,7 @@ export class CustomContact extends CustomPage {
         document.getElementById('contenu').className = 'blog';
         // Créer les infos des catégories
         this.setCat(cat, 0);
-        this.setArticles(cat.Articles.data);
+        this.setArticles(cat, 1);
         // this.setMap();
     };
     /** Crér une carte à partir de Leaflet */

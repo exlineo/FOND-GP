@@ -74,7 +74,10 @@ export class CustomRouter {
         const style = page.Style.data ? page.Style.data.attributes.Alias : null;
         // Attribuer une catégorie si utile, sinon, rien
         const categorie = page.Categorie.data ? page.Categorie.data.attributes : null;
-        this.instance = new tmp.classe(categorie, page.Lien.Alias, style);
+        // let articles = []
+        const articles = page.Articles.data ? page.Articles.data.map(a => a.attributes.Articles.data).flat() : null;
+        // console.log(categorie, articles);
+        this.instance = new tmp.classe(categorie, articles, page.Lien.Alias, style);
     }
     /** Retrouver une classe en fonction du nom du template et inscrire l'instance dedans
      */

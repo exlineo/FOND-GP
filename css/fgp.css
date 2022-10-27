@@ -157,8 +157,6 @@ nav li:hover > ul{
 nav li:hover > ul a{
   margin:0;
 }
-main > header{
-}
 main > header > nav{
   display: flex;
   flex-flow: column;
@@ -197,10 +195,11 @@ article > div{
   text-align: justify;
 }
 article hr{
-  border:thin rgba(255,255,255,.5) solid;
+  border:0;
+  border-bottom:thin #0F1D2B solid;
   margin-left:auto;
   margin-right:0;
-  width:50%;
+  width:40%;
 }
 article > div > label{
   position:absolute;
@@ -248,6 +247,14 @@ input[type=submit]{
 input[type=reset]{
   background-color: var(--t);
 }
+#entete, #entete div{
+  flex-direction:column;
+  width:100%;
+  text-align:center
+}
+#entete article{
+  width:100%;
+}
 #contenu{
   width: 100%;
   height:calc(100vh - 225px);
@@ -289,11 +296,17 @@ section.equipe article p{
   padding:0;
   margin:0;
 }
+section.equipe .intro{
+  flex-flow:column;
+}
+section.equipe .intro > *{
+  width:100%;
+}
 p{
-  padding-left:50px;
+  padding-left:30px;
 }
 ul, ol {
-  padding-left:75px;
+  padding-left:60px;
 }
 ul > li {
   list-style:circle;
@@ -329,17 +342,14 @@ ul > li {
 }
 figure{
   width:100%;
-  min-height:300px;
+  min-height:250px;
   background:50% no-repeat;
   background-size:100%;
+  /* background-size: cover; */
   padding:0;
   margin:0;
   box-sizing: border-box;
-  border-bottom:4px solid var(--t);
   transition: all .3s ease;
-}
-figure:hover{
-  background-size: 110%;
 }
 legend {
   font-size:10px;
@@ -588,7 +598,25 @@ button a:hover{
 .blog-double {
 
 }
-
+.intro{
+  display:flex;
+  flex-flow: row nowrap;
+}
+.intro > *{
+  width:50%;
+  height:inherit;
+}
+.intro figure{
+  height:100%;
+  background-size: cover;
+}
+.figure{
+  overflow: hidden;
+  border-bottom:4px solid var(--t);
+}
+.figure:hover > figure{
+  transform: scale(1.2) rotate(2deg);
+}
 /* POPUP CROIX DE LA POPUP */
 #popup{
   position:fixed;

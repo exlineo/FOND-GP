@@ -3,7 +3,7 @@ import { CustomPage } from "./DOM/Page.js";
 
 /** Une page avec la catégorie à gauche, un sous menu à droite et les articles en dessous */
 export class CustomCategorieMenuDroite extends CustomPage {
-    constructor(cat, alias, style=null){
+    constructor(cat, articles, alias, style=null){
         super(cat);
         document.getElementById('contenu').className = 'blog-menu-droite';
         this.setCat(cat, 1);
@@ -16,7 +16,7 @@ export class CustomCategorieMenuDroite extends CustomPage {
 }
 /** Une page avec la catégorie à droite, un sous menu à gauche et les articles en dessous */
 export class CustomCategorieMenuGauche extends CustomPage {
-    constructor(cat, alias, style){
+    constructor(cat, articles, alias, style){
         super(cat);
         document.getElementById('contenu').className = 'blog-menu-gauche';
         console.log("Catégorie gauche", cat);
