@@ -1,0 +1,315 @@
+export class QL {
+  headers() {
+    const head = new Headers();
+    head.append('Content-type', 'application/json');
+    // head.append('Access-Control-Allow-Origin', '*');
+    return head;
+  }
+  /** Récupérer les données globales du menu, catégories et articles */
+  reqAll() {
+    return JSON.stringify({
+      query: `{
+        menus(pagination: { page: 1, pageSize: 30 }){
+          data{
+            id
+            attributes{
+              Lien{
+                Titre
+                Alias
+                Url
+                Description
+                Cible
+              }
+        Categorie{
+          data{
+            attributes{
+              Titre
+              Alias
+              Description
+              Media{
+                data{
+                  attributes{
+                    url
+                    caption
+                  } 
+                }
+              }
+              Ordre
+            }
+          }
+        }
+        Articles{
+          data{
+            attributes{
+              Titre
+              Alias
+              Description
+              Media{
+                data{
+                  attributes{
+                    url
+                    caption
+                  } 
+                }
+              }
+              Ordre
+              Articles{
+                data{
+                  id
+                  attributes{
+                    Titre
+                    Alias
+                    Intro
+                    Contenu
+                    MediaIntro{
+                      data{
+                        attributes{
+                          url
+                          caption
+                        } 
+                      }
+                    }
+                    MediaContenu{
+                      data{
+                       attributes{
+                          name
+                          url
+                          previewUrl
+                        } 
+                      }
+                    }
+                    Liens{
+                      Titre
+                      Url
+                      Description
+                      Cible
+                      Alias
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        Ordre
+        Rattachement{
+          data{
+            attributes{
+              Alias
+              Type
+            } 
+          }
+        }
+        Parent{
+          data{
+            id
+          }
+        }
+        Template{
+          data{
+            attributes{
+              Alias
+            }
+          }
+        }
+        Formulaire{
+          data{
+            attributes{
+              Titre
+              Alias
+              Description
+              Email
+              Destination
+              champ{
+                Titre
+              	Infos
+                Aide
+                Type
+                Options
+                Obligatoire
+              }
+            }
+          }
+        }
+        Style{
+          data{
+            attributes{
+              Alias
+            }
+          }
+        }
+      }
+    }
+  }
+}`
+    })
+  }
+
+  /** Requete pour récupérer la liste des articles */
+  reqArticles() {
+    return JSON.stringify({
+      query: `{
+            articles{
+            data{
+                id
+                attributes{
+                Titre
+                Intro
+                MediaIntro{
+                    data{
+                    attributes{
+                        url
+                        caption
+                    }
+                    }
+                }
+                Contenu
+                MediaContenu{
+                    data{
+                    id
+                    attributes{
+                        url
+                        caption
+                    }
+                    }
+                }
+                Categorie{
+                    data{
+                    id
+                    attributes{
+                        Titre
+                        Description
+                        Media{
+                        data{
+                            id
+                            attributes{
+                            name
+                            url
+                            previewUrl
+                            }
+                        }
+                        }
+                    }
+                    }
+                }
+                }
+            }
+            }
+        }`})
+  };
+  /** Récupérer une catégorie en particulier */
+  reqCategorie() {
+
+  }
+  // Requete pour récupérer la liste des catégories
+  reqCategories() {
+    return JSON.stringify({
+      query: `{
+        categories{
+          data{
+            id
+            attributes{
+              Titre
+              Alias
+              Description
+              Ordre
+              Articles{
+                data{
+                  id
+                  attributes{
+                    Titre
+                    Alias
+                    Intro
+                    Contenu
+                    Liens{
+                      Titre
+                      Url
+                      Description
+                      Cible
+                    }
+                    MediaIntro{
+                      data{
+                        attributes{
+                          url
+                          caption
+                        }
+                      }
+                    }
+                    MediaContenu{
+                      data{
+                        attributes{
+                          url
+                          caption
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              Agendas{
+                data{
+                  attributes{
+                    Titre
+                    Alias
+                  }
+                }
+              }
+              Cartes{
+                data{
+                  attributes{
+                    Titre
+                    Alias
+                    Description
+                    Coordonnees
+                    Liens{
+                      Titre
+                      Url
+                      Description
+                      Cible
+                    }
+                    Localisation{
+                      Titre
+                      Latitude
+                      Longitude
+                    }
+                  }
+                }
+              }
+              Media{
+                data{
+                  attributes{
+                    name
+                    url
+                  }
+                }
+              }
+            }
+          }
+        }
+      }`});
+  };
+
+  /** Requete pour récupérer la liste des articles */
+  reqDocs() {
+    return JSON.stringify({
+      query: `{
+      documents{
+        data{
+          id
+          attributes{
+            Titre
+            Alias
+            Description
+            Lien{
+              Titre
+              Url
+              Description
+              Cible
+            }
+          }
+        }
+      }
+    }`
+    })
+  };
+}
