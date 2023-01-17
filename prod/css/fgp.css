@@ -128,15 +128,19 @@ nav.sous-menu li{
 nav a{
   display:block;
   padding:10px 0;
-  margin:10px -1px;
+  margin:10px 4px 10px 10px;
 }
-nav a::before{
+/* nav a::before{
   content:'-';
   margin-right:16px;
-}
-nav a::after{
+}*/
+nav > ul > li > a::after{
   content:'-';
   margin-left:14px;
+}
+nav > ul > li:last-child > a::after{
+  content:'';
+  margin-left:0;
 }
 nav li > ul{
   opacity:0;

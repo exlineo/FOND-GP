@@ -32,7 +32,6 @@ export class CustomDOM extends CustomPopup {
         this.cols.push(document.querySelector('#contenu > section:nth-child(2)'));
 
         this.graph = new Graph();
-        console.log(this.graph);
 
         // this.md = new showdown.Converter();
         // this.md.setOption('simplifiedAutoLink', 'true');
@@ -180,7 +179,7 @@ export class CustomDOM extends CustomPopup {
     creeMenu(el, sm, smEl = null) {
         const ul = document.createElement('ul');
         // sm = this.triOrdreMenu(sm);
-        console.log(el, sm);
+        // console.log(el, sm);
         sm.forEach(m => {
             let li = document.createElement('li');
             let a = document.createElement('a');
@@ -201,24 +200,6 @@ export class CustomDOM extends CustomPopup {
         });
         el.appendChild(ul);
     }
-    /** Créer les sous menus */
-    // triMenu(menu) {
-    //     // Organiser les sous-menus
-    //     menu.forEach((m, i) => {
-    //         if (m.Parent.data) {
-    //             const parent = menu.filter(s => s.id == m.Parent.data?.id)[0];
-    //             if (!parent.hasOwnProperty('enfants')) parent['enfants'] = [];
-    //             parent.enfants.push(m);
-    //             delete menu[i];
-    //         };
-    //     });
-    //     return menu;
-    // }
-    /** Mettre les menus en ordre */
-    // triOrdreMenu(menu) {
-    //     const ordre = menu.sort((a, b) => a.ordre - b.ordre);
-    //     return ordre;
-    // }
     /** Créer un sous menu
      * @param m Sous menu à afficher
     */
@@ -262,17 +243,20 @@ export class CustomDOM extends CustomPopup {
         }
         // this.enchasse = null;
     }
-    /** Renvoyer la cible pour l'écriture d'un contenu */
+    /** Renvoyer l'élément HTML pour l'écriture d'un contenu */
     setCible(cible=null){
         if(this.enchasse){
+            // A l'intérieur d'une page
             return this.enchasse;
         }else if(cible){
+            // Un endroit spécifique
             return cible;
         }else{
+            // La colonne gauche ou droite
             return this.cols[this.col];
         }
     }
-    /** Add style to article to animate it
+    /** Animer un article
      * @param toggle Booléen indiquant quelle animation déclencher
     */
     setAnimStyle(toggle) {

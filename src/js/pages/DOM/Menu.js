@@ -16,10 +16,10 @@ export class Menu extends CustomDOM {
         this.burger.addEventListener('click', (e) => {
             this.toggleMobile();
         });
-        // addEventListener('MENUS', (ev) => {
-        //     console.log('Menus event');
-        //     this.setStructureMenus()
-        // });
+        addEventListener('MENUS', (ev) => {
+            console.log('Menus event');
+            this.setStructureMenus()
+        });
     };
     /** Ecrire les menus dans le DOM */
     setStructureMenus() {

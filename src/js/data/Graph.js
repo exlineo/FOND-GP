@@ -1,5 +1,3 @@
-// import { QL } from './QL';
-import { Menu } from '../pages/DOM/Menu';
 import { ServiceStore } from './Service';
 import { setENV } from '../../config/env';
 
@@ -29,7 +27,7 @@ export class Graph {
     fire; // Application firebase
 
     constructor() {
-        super();
+        console.log('Graph construit');
         // this.el = el;
         // this.getMenus(); // Récupérer les menus depuis la base
         this.s = new ServiceStore(); // Stocker les données pour les partager
@@ -39,18 +37,14 @@ export class Graph {
     }
     /** Récupérer les données depuis firebase */
     async getFireMenus() {
+        const liens = [];
         await getDocs(collection(this.store, 'menus'))
             .then(menus => {
                 // Gérer parents et enfants des liens de menus
                 ServiceStore._liens.forEach((l, i) => {
-                    if(l.parent && l.parent.length > 0){
-                        const l_tmp = ServiceStore._liens.filter(t => t.alias == l.parent)[0];
-                        if(l_tmp){
-                            if(!l_tmp.hasOwnProperty('enfants')) l_tmp.enfants = [];
-                            l_tmp.enfants.push(l);
-                            ServiceStore._liens.splice(i, 1);
-                        }
-                    }
+                    const enfants = ServiceStore._liens.filter(t => l.alias == t.parent);
+                    if(!l.hasOwnProperty('enfant')) l.enfants = enfants;
+                    if(!l.parent || l.parent.length == 0) liens.push(l);
                 });
                 // Gérer les menus récupérés
                 menus.forEach(m => {
@@ -58,15 +52,15 @@ export class Graph {
                     menu.id = m.id;
                     menu.liens = [];
                     // Filtrer les liens pour les attribuer au menu
-                    const tmp = ServiceStore._liens.filter(l => l.menus.includes(menu.alias));                    
-                    // console.log(tmp.sort((a,b) => a.ordre - b.ordre));
+                    const tmp = liens.filter(l => {
+                        if(menu.alias == 'collections') console.log(l.menus, menu.alias);
+                        if(l.menus.includes(menu.alias)) return l;
+                    });
                     menu.liens = tmp.sort((a,b) => a.ordre - b.ordre);
-                    if (menu.liens.enfant) menu.liens.enfants.sort((a,b) => a.ordre > b.ordre)
+                    // if (menu.liens.enfant) menu.liens.enfants.sort((a,b) => a.ordre > b.ordre);
                     ServiceStore._menus[menu.alias] = menu;
                 });
-                console.log("Menus", ServiceStore._menus);
                 dispatchEvent(new Event('MENUS'));
-                console.log(dispatchEvent(new Event('MENUS')));
             })
             .catch(er => {
                 console.log(er);
@@ -84,8 +78,6 @@ export class Graph {
                 });
                 // Classification du tableau par ordre
                 ServiceStore._liens = ServiceStore._liens.sort((a,b) => a.ordre - b.ordre);
-                
-                console.log(ServiceStore._liens);
                 // Récupérer la liste des menus lorsque les liens sont récupérés
                 this.getFireMenus();
             })
@@ -122,23 +114,10 @@ export class Graph {
         for (let i of data) {
             this.listeCategories.push(i.attributes);
         }
-        console.log(this.listeCategories);
-        this.menu = new Menu(this.listeCategories);
+        // this.menu = new Menu(this.listeCategories);
     }
     /** Paramétrer le service worker si on peut */
     setSW(scope) {
         this.SW = new ServiceStore(scope);
     };
-    triMenu(lien) {
-        // Organiser les sous-menus
-        menu.forEach((m, i) => {
-            if (m) {
-                const parent = menu.filter(s => s.alias == m.parent)[0];
-                if (!parent.hasOwnProperty('enfants')) parent['enfants'] = [];
-                parent.enfants.push(m);
-                delete menu[i];
-            };
-        });
-        return menu;
-    }
 }
