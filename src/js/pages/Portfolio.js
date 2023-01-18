@@ -5,17 +5,15 @@ export class CustomPortfolio extends CustomPage {
     popup; // Popup Html à écrire
     limites = {debut:0,nb:4,ecart:0};
 
-    constructor(cat, alias, style=null){
-        super(cat, alias);
+    constructor(menu){
+        super(menu);
         document.getElementById('contenu').className = 'portfolio';
         // this.setMur();
     }
     /** Afficher les images des références */
     setMur(){
         // Trier les items en décroissance sur l'année
-        this.categorie.Articles.items.sort((a, b) => {
-            return b.annee - a.annee;
-        });
+        this.contenu.articles.sort((a, b) => a - b);
     };
     /** Créer un article */
     setImage(a){

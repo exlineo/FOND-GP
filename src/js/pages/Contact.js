@@ -4,12 +4,12 @@ export class CustomContact extends CustomPage {
 
     map;
 
-    constructor(cat, alias, style=null) {
-        super(cat, alias);
+    constructor(menu) {
+        super(menu);
         document.getElementById('contenu').className = 'blog';
         // Créer les infos des catégories
-        this.setCat(cat, 0);
-        this.setArticles(cat, 1);
+        this.setCat(this.contenu.categories[0], 0);
+        this.setArticles(this.contenu.articles, 1);
         // this.setMap();
     };
     /** Crér une carte à partir de Leaflet */

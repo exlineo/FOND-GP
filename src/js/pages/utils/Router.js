@@ -11,9 +11,8 @@ export class CustomRouter {
         // Lancé par les menus
         addEventListener('ROUTE', (ev) => {
             this.setPage(ev.detail.route);
-
-            let path = new URL(window.location.href).pathname;
-            const h = path.split('/');
+            // let path = new URL(window.location.href).pathname;
+            // const h = path.split('/');
         });
         // Lancé à l'initialisation des menus (Graph)
         addEventListener('LOAD', ev => this.initRoute());
@@ -25,7 +24,7 @@ export class CustomRouter {
     };
     /** La route lorsqu'on arrive sur la page */
     initRoute() {
-        this.getPage();
+        // this.getPage();
         // Identifier l'adresse actuelle
         let path = new URL(window.location.href).pathname;
         const h = path.split('/');
@@ -62,21 +61,16 @@ export class CustomRouter {
     /** Créer la page avec les contenus
     * @param {Lien} lien Objet contenant toutes les informations du lien et de la page
     */
-    setPage(page) {
+    setPage(menu) {
         let tmp = 'categorie';
         // Identifier l'instance en lien avec la page
         this.instances.forEach(i => {
-            if (page.template) {
-                if (i.alias == page.template) tmp = i;
+            if (menu.template) {
+                if (i.alias == menu.template) tmp = i;
             }
         });
-        console.log(page, page.style);
-        // Récupérer le style de la page si présent
-        const style = page.style;
-        // Attribuer une catégorie si utile, sinon, rien
-        const categorie = (Array.isArray(page.categories) && page.categories.length > 0) ?? page.categories[0];
-        const articles = page.articles;
-        this.instance = new tmp.classe(categorie, articles, page.url, style);
+        // On instancie une page en fonction du template du menu et on on y injecte le menu
+        this.instance = new tmp.classe(menu);
     }
     /** Retrouver une classe en fonction du nom du template et inscrire l'instance dedans
      */

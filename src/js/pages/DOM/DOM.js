@@ -1,6 +1,7 @@
 import { CustomPopup } from './Popup';
 import { setENV } from '../../../config/env';
 import { Graph } from '../../data/Graph';
+import { ServiceStore } from '../../data/Service';
 
 export class CustomDOM extends CustomPopup {
 
@@ -15,7 +16,7 @@ export class CustomDOM extends CustomPopup {
     burger; // Bouton pour ouvrir le menu mobile
     msg; // Ecrire un message d'alerte
     enchasse; // Ecrire les contenus dans une div dans la page (pour les sous menus)
-    graph; // Une instance de Graph
+    store;
 
     constructor() {
         super();
@@ -31,7 +32,7 @@ export class CustomDOM extends CustomPopup {
         this.cols.push(document.querySelector('#contenu > section:nth-child(1)'));
         this.cols.push(document.querySelector('#contenu > section:nth-child(2)'));
 
-        this.graph = new Graph();
+        this.store = new ServiceStore();
 
         // this.md = new showdown.Converter();
         // this.md.setOption('simplifiedAutoLink', 'true');
@@ -80,7 +81,7 @@ export class CustomDOM extends CustomPopup {
         div.className = 'figure';
         if (media.url) {
             const fig = document.createElement('figure');
-            this.setAttr(fig, { name: 'style', value: `background-image:url(${setENV().servurl + media.url})` });
+            this.setAttr(fig, { name: 'style', value: `background-image:url(${media.url})` });
             div.appendChild(fig);
         };
         if (media.caption) {
@@ -179,7 +180,6 @@ export class CustomDOM extends CustomPopup {
     creeMenu(el, sm, smEl = null) {
         const ul = document.createElement('ul');
         // sm = this.triOrdreMenu(sm);
-        // console.log(el, sm);
         sm.forEach(m => {
             let li = document.createElement('li');
             let a = document.createElement('a');
@@ -223,12 +223,11 @@ export class CustomDOM extends CustomPopup {
      */
     setContent(m, cible = null) {
         const el = this.setCible(cible);
-        const articles = m.articles;
         el.innerHTML = '';
-        if (m.lien != 'blank') {
+        if (m.cible != '_blank') {
             if (m.template == 'categorie-integree') {
-                // Ecire des articles dans une partie de la page
-                this.setArticles(articles, el);
+                // Appel de Page pour écrire les articles
+                this.setArticles(this.filtreContenu(m).articles, el);
             } else if (m.template == 'formulaire') {
                 // C'est un formulaire qu'il faut écrire
                 this.setForm(m.formulaire, el);
@@ -237,11 +236,25 @@ export class CustomDOM extends CustomPopup {
                 dispatchEvent(new CustomEvent('ROUTE', { detail: { route: m } }))
                 history.pushState({ key: m.url }, '', m.url);
             }
-            if (articles && articles.length > 0) this.setStyle(m.style);
         } else {
             window.open(m.url, '_blank');
         }
         // this.enchasse = null;
+    }
+    /** Récupérer le contenu à partir d'un lien de menu */
+    filtreContenu(menu){
+        let articles = []; // récupérer une liste d'articles à afficher
+        let categories = []; // Récupérer la liste des catégories à afficher
+        // Récupérer les articles du menu s'il y en a
+        if(menu.articles && menu.articles.length > 0) articles = [articles, ...menu.articles].flat();
+        // Récupérer les articles des catégories s'il y en a
+        if(menu.categories) {
+            menu.categories.forEach(cat => {
+                articles = [articles, ...ServiceStore._articles.filter(a => a.categories.includes(cat))].flat();
+                categories = ServiceStore._categories.filter(a => a.alias == cat);
+            });
+        };
+        return {categories, articles};
     }
     /** Renvoyer l'élément HTML pour l'écriture d'un contenu */
     setCible(cible=null){

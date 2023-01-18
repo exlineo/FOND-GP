@@ -147,11 +147,12 @@ nav li > ul{
   position:absolute;
   z-index:2;
   pointer-events: none;
-  transition: all .3s ease;
+  transition: opacity .3s ease, margin .3s ease;
   background-color:var(--clair);
   text-align:center;
   padding:0;
   font-size:14px;
+  width:100%;
 }
 nav li:hover > ul{
   opacity:1;

@@ -1,6 +1,7 @@
 import { CustomDOM } from './DOM';
 import { CustomRouter } from '../utils/Router';
 import { ServiceStore } from '../../data/Service';
+import { Graph } from '../../data/Graph';
 
 /** Gestion du menu, des interactions avec les données et les pages */
 export class Menu extends CustomDOM {
@@ -8,6 +9,7 @@ export class Menu extends CustomDOM {
     liens = []; // Liste des liens du menu
     router; // Gestion des routes
     mobile = false;
+    graph;
 
     constructor() {
         super();
@@ -20,6 +22,7 @@ export class Menu extends CustomDOM {
             console.log('Menus event');
             this.setStructureMenus()
         });
+        this.graph = new Graph();
     };
     /** Ecrire les menus dans le DOM */
     setStructureMenus() {

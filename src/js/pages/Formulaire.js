@@ -2,11 +2,11 @@ import { CustomPage } from "./DOM/Page";
 
 export class CustomForm extends CustomPage {
 
-    constructor(cat, alias, style=null) {
-        super(cat, alias);
+    constructor(menu) {
+        super(menu);
         document.getElementById('contenu').className = 'formulaire';
         
         // Créer les infos des catégories
-        this.setCat(cat, 0);
+        this.setCat(this.contenu.categories[0], 0);
     };
 }

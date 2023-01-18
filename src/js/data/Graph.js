@@ -1,5 +1,4 @@
 import { ServiceStore } from './Service';
-import { setENV } from '../../config/env';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -19,15 +18,12 @@ const firebaseConfig = {
 
 export class Graph {
 
-    config; // La configuration récupérée dans le JSON
-    params; // Sauvegarde des paramètres de la requête
     el; // Elément HTML du menu à lui envoyer
     SW; // Référence au servcie Worker
     s; // Référence au service de données
     fire; // Application firebase
 
     constructor() {
-        console.log('Graph construit');
         // this.el = el;
         // this.getMenus(); // Récupérer les menus depuis la base
         this.s = new ServiceStore(); // Stocker les données pour les partager
@@ -53,14 +49,13 @@ export class Graph {
                     menu.liens = [];
                     // Filtrer les liens pour les attribuer au menu
                     const tmp = liens.filter(l => {
-                        if(menu.alias == 'collections') console.log(l.menus, menu.alias);
                         if(l.menus.includes(menu.alias)) return l;
                     });
                     menu.liens = tmp.sort((a,b) => a.ordre - b.ordre);
                     // if (menu.liens.enfant) menu.liens.enfants.sort((a,b) => a.ordre > b.ordre);
                     ServiceStore._menus[menu.alias] = menu;
                 });
-                dispatchEvent(new Event('MENUS'));
+                this.getFireCategories();
             })
             .catch(er => {
                 console.log(er);
@@ -86,35 +81,39 @@ export class Graph {
                 dispatchEvent(new CustomEvent('MSG', { detail: { titre: 'Erreur de routage', msg: er } }))
             })
     }
-    /** Faire une requête */
-    getCategories() {
-        fetch(setENV().graphurl, {
-            method: 'POST',
-            body: this.reqCategories(),
-            headers: this.headers()
-        })
-            .then(data => data.json())
-            .then(d => {
-                this.setCategories(d.data.categories.data);
-                // Enregistrer les données
-                // this.storeData('listeCategories', this.listeCategories);
+    /** Récupérer les catégories en général */
+    async getFireCategories() {
+        await getDocs(collection(this.store, 'categories'))
+            .then(c => {
+                c.forEach(l => {
+                    const cat = l.data();
+                    // Enregistrer aussi la liste des liens pour le router
+                    ServiceStore._categories.push(cat);
+                });
+                // Récupérer la liste des menus lorsque les liens sont récupérés
+                this.getFireArticles();
             })
-            .catch(console.error);
-    };
-    /** Récupérer les articles d'une page */
-    getArticles(index) {
-        if (this.listeCategories.length > 0) {
-            return this.listeCategories.find(art => art.alias == index).Articles.items;
-        } else {
-            return false;
-        };
+            .catch(er => {
+                console.log(er);
+                dispatchEvent(new CustomEvent('MSG', { detail: { titre: 'Erreur de routage', msg: er } }))
+            })
     }
-    /** Initialiser les valeurs des données et lancer le menu */
-    setCategories(data) {
-        for (let i of data) {
-            this.listeCategories.push(i.attributes);
-        }
-        // this.menu = new Menu(this.listeCategories);
+    /** Rcupérer les liens des menus (dans un second temps) */
+    async getFireArticles() {
+        await getDocs(collection(this.store, 'articles'))
+            .then(art => {
+                art.forEach(l => {
+                    const a = l.data();
+                    // Enregistrer aussi la liste des liens pour le router
+                    ServiceStore._articles.push(a);
+                });
+                // Créer les menus une fois les données chargées
+                dispatchEvent(new Event('MENUS'));
+            })
+            .catch(er => {
+                console.log(er);
+                dispatchEvent(new CustomEvent('MSG', { detail: { titre: 'Erreur de routage', msg: er } }))
+            })
     }
     /** Paramétrer le service worker si on peut */
     setSW(scope) {
