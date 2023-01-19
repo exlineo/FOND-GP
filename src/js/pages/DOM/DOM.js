@@ -181,13 +181,17 @@ export class CustomDOM extends CustomPopup {
             let li = document.createElement('li');
             let a = document.createElement('a');
             a.textContent = m.titre;
-            if (m.cible) a.setAttribute('target', m.cible);
-            a.setAttribute('href', m.url);
-            a.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.setContent(m, smEl);
-                this.toggleMobile();
-            });
+            // Eviter des liens sur les menus qui ont des enfants, ça complique l'affichage
+            if(m.enfants.length == 0) {
+                a.setAttribute('href', m.url);
+                if (m.cible) a.setAttribute('target', m.cible);
+                a.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.setContent(m, smEl);
+                    this.toggleMobile();
+                });
+            };
+            
             li.appendChild(a);
             ul.appendChild(li);
             // Créer les sous menus
