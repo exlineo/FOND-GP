@@ -9,17 +9,15 @@ export class Menu extends CustomDOM {
     liens = []; // Liste des liens du menu
     router; // Gestion des routes
     mobile = false;
-    graph;
-
+    graph; // Lien vers la classe pour accéder aux données
+    
     constructor() {
         super();
         // Menus créés une fois que les données ont été chagée et stockées dans le service
-        // this.setStructureMenus();
         this.burger.addEventListener('click', (e) => {
             this.toggleMobile();
         });
         addEventListener('MENUS', (ev) => {
-            console.log('Menus event');
             this.setStructureMenus()
         });
         this.graph = new Graph();

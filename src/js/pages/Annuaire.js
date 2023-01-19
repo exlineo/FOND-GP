@@ -6,6 +6,6 @@ export class CustomAnnuaire extends CustomPage {
         super(menu);
         document.getElementById('contenu').className = 'formulaire';
         
-        this.setCat(this.contenu.categories[0], 0);
+        this.setCat(this.contenu.categories[0], this.cols[0]);
     };
 }

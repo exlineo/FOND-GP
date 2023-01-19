@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;400;600&family=Roboto+Flex:opsz,wght@8..144,100;8..144,400;8..144,600&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;400;600&family=Roboto+Flex:opsz,wght@8..144,100;8..144,400;8..144,600&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;400;600');
 
 :root{
   /* Variables */
@@ -23,7 +24,7 @@ html, body, main, section{
 }
 body{
     display: flex;
-    font-family: 'Roboto Flex', sans-serif;
+    font-family: 'Raleway', sans-serif;
     font-size:16px;
     font-weight: 500;
     color:var(--sombre);
@@ -614,6 +615,12 @@ button a:hover{
 .intro figure{
   height:100%;
   background-size: cover;
+}
+section.droit .intro{
+  flex-flow: column nowrap;
+}
+section.droit .intro > *{
+  width:100%;
 }
 .figure{
   overflow: hidden;

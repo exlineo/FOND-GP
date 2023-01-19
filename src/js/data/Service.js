@@ -6,6 +6,7 @@ export class ServiceStore {
   static _categories = []; // Liste des catégories
   static _liens = [];
   static _articles = [];
+  static _formulaires = [];
 
   constructor(scope) {
     this.scope = scope;

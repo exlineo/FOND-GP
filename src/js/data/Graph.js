@@ -30,6 +30,13 @@ export class Graph {
         this.fire = initializeApp(firebaseConfig); // Applucation firebase initialisée
         this.store = getFirestore(this.fire); // Accès à la base de données
         this.getFireLiens(); // Récupérer la liste des menus depuis Firebase
+        addEventListener('DATA', ev => {
+            const req = ev.detail.requete;
+            switch (req.type){
+                case 'form':
+                    this.getFireForm();
+            }
+        });
     }
     /** Récupérer les données depuis firebase */
     async getFireMenus() {
@@ -109,11 +116,28 @@ export class Graph {
                 });
                 // Créer les menus une fois les données chargées
                 dispatchEvent(new Event('MENUS'));
+                this.getFireForm();
             })
             .catch(er => {
                 console.log(er);
                 dispatchEvent(new CustomEvent('MSG', { detail: { titre: 'Erreur de routage', msg: er } }))
             })
+    }
+    /** Récupérer les données depuis firebase */
+    async getFireForm() {
+        await getDocs(collection(this.store, 'formulaires'))
+        .then(formulaire => {
+            formulaire.forEach(form => {
+                const f = form.data();
+                // Enregistrer aussi la liste des liens pour le router
+                ServiceStore._formulaires.push(f);
+            })
+            console.log('Formulaires', ServiceStore._formulaires);
+        })
+        .catch(er => {
+            console.log(er);
+            dispatchEvent(new CustomEvent('MSG', { detail: { titre: 'Erreur de routage', msg: er } }))
+        });
     }
     /** Paramétrer le service worker si on peut */
     setSW(scope) {

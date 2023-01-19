@@ -8,8 +8,8 @@ export class CustomContact extends CustomPage {
         super(menu);
         document.getElementById('contenu').className = 'blog';
         // Créer les infos des catégories
-        this.setCat(this.contenu.categories[0], 0);
-        this.setArticles(this.contenu.articles, 1);
+        this.setCat(this.contenu.categories[0], this.cols[0]);
+        this.setArticles(this.contenu.articles, this.cols[1]);
         // this.setMap();
     };
     /** Crér une carte à partir de Leaflet */

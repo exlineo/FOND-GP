@@ -28,6 +28,10 @@ export const INSTANCES = [
         classe: CustomCategorie,
         instance: null
     },{
+        alias: 'categorieIntegree',
+        classe: CustomCategorie,
+        instance: null
+    },{
         alias: 'categorieMenuGauche',
         classe: CustomCategorieMenuGauche,
         instance: null

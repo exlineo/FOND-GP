@@ -6,12 +6,11 @@ export class CustomCategorieMenuDroite extends CustomPage {
     constructor(menu){
         super(menu);
         document.getElementById('contenu').className = 'blog-menu-droite';
-        console.log("Page Catégorie", menu, this.contenu.categories[0], ServiceStore._menus[menu.sousmenu]);
-        this.setCat(this.contenu.categories[0], 1);
+        this.setCat(this.contenu.categories[0], this.cols[0]);
         
         // Ecriture des articles et du sous-menu
         if(ServiceStore._menus[menu.sousmenu]) {
-            this.setSousMenu(ServiceStore._menus[menu.sousmenu]);
+            this.setSousMenu(ServiceStore._menus[menu.sousmenu], this.cols[1]);
         };
     }
 }
@@ -20,12 +19,11 @@ export class CustomCategorieMenuGauche extends CustomPage {
     constructor(menu){
         super(menu);
         document.getElementById('contenu').className = 'blog-menu-gauche';
-        console.log("Page Catégorie", menu, this.contenu.categories[0], ServiceStore._menus[menu.sousmenu]);
-        this.setCat(this.contenu.categories[0], 0);
+        this.setCat(this.contenu.categories[0], this.cols[1]);
 
         // Ecriture des articles et du sous-menu
         if(ServiceStore._menus[menu.sousmenu]) {
-            this.setSousMenu(ServiceStore._menus[menu.sousmenu]);
+            this.setSousMenu(ServiceStore._menus[menu.sousmenu], this.cols[0]);
         };
     }
 }

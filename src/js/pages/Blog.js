@@ -5,6 +5,7 @@ export class CustomBlog extends CustomPage {
         super(menu);
         console.log("Page blog", menu);
         // Créer les infos des catégories
-        this.setCat(this.contenu.categories[0], 1);
+        this.setCat(this.contenu.categories[0], this.cols[1]);
+        this.setCat(this.contenu.articles, this.cols[0]);
     }
 }

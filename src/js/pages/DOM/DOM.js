@@ -1,13 +1,11 @@
 import { CustomPopup } from './Popup';
-import { setENV } from '../../../config/env';
-import { Graph } from '../../data/Graph';
 import { ServiceStore } from '../../data/Service';
 
 export class CustomDOM extends CustomPopup {
 
     // md;
     style; // Le style a appliquer à une page
-    cols = []; // Ls colonnes à ajouter aux pages
+    cols = []; // Les colonnes à ajouter aux pages
     col = 1; // Déterminer la valeur de la colonne par défaut pour l'affichage des contenus
     contenu; // L'élement HTML qui contient le contenu du site
     head; // Entete d'une page
@@ -16,7 +14,7 @@ export class CustomDOM extends CustomPopup {
     burger; // Bouton pour ouvrir le menu mobile
     msg; // Ecrire un message d'alerte
     enchasse; // Ecrire les contenus dans une div dans la page (pour les sous menus)
-    store;
+    store; // Lien vers le service store
 
     constructor() {
         super();
@@ -41,7 +39,7 @@ export class CustomDOM extends CustomPopup {
         addEventListener('MSG', (ev) => {
             // this.setPage(ev.detail.route);
             if(!document.body.querySelector('#msg')) this.setMsg(ev.detail);
-        })
+        });
     }
     /** Réinitialiser le contenu des pages pour éviter les doublons */
     initEl(){
@@ -153,11 +151,11 @@ export class CustomDOM extends CustomPopup {
     /** Formulaires */
     setInput(champ) {
         const field = document.createElement('fieldset');
-        const input = document.createElement(champ.Type);
-        input.setAttribute('placeholder', champ.Infos);
-        input.setAttribute('name', champ.Titre);
+        const input = document.createElement(champ.type);
+        input.setAttribute('placeholder', champ.infos);
+        input.setAttribute('name', champ.titre);
 
-        const label = this.setLabel(champ.Titre);
+        const label = this.setLabel(champ.titre);
 
         field.appendChild(label);
         field.appendChild(input);
@@ -179,7 +177,6 @@ export class CustomDOM extends CustomPopup {
      */
     creeMenu(el, sm, smEl = null) {
         const ul = document.createElement('ul');
-        // sm = this.triOrdreMenu(sm);
         sm.forEach(m => {
             let li = document.createElement('li');
             let a = document.createElement('a');
@@ -203,8 +200,8 @@ export class CustomDOM extends CustomPopup {
     /** Créer un sous menu
      * @param m Sous menu à afficher
     */
-    setSousMenu(menu) {
-        const el = this.cols[this.col];
+    setSousMenu(menu, el) {
+        // const el = this.cols[this.col];
         el.innerHTML = '';
         const nav = document.createElement('nav');
         const div = document.createElement('div');
@@ -213,19 +210,19 @@ export class CustomDOM extends CustomPopup {
         el.appendChild(div);
         el.prepend(nav);
 
-        this.creeMenu(nav, menu, div);
+        this.creeMenu(nav, menu.liens, div);
         this.enchasse = div;
-        this.setContent(menu[0], div);
+        this.setContent(menu.liens[0], div);
     }
     /** Créer le contenu des pages en fonction des paramètres du menu
      * @param m Informations sur le lien cliqué (la page)
      * @param cible Savoir où la page doit écrire son contenu
      */
-    setContent(m, cible = null) {
-        const el = this.setCible(cible);
+    setContent(m, cibleEl = null) {
+        const el = this.setCible(cibleEl);
         el.innerHTML = '';
         if (m.cible != '_blank') {
-            if (m.template == 'categorie-integree') {
+            if (m.template == 'categorieIntegree') {
                 // Appel de Page pour écrire les articles
                 this.setArticles(this.filtreContenu(m).articles, el);
             } else if (m.template == 'formulaire') {
@@ -281,9 +278,9 @@ export class CustomDOM extends CustomPopup {
      * @param cat Catégorie à décortiquer pour l'afficher
      * @param n Numéro de la colonne dans laquelle afficher la catégorie
     */
-    setCat(cat, n) {
-        this.col = n;
-        const el = this.cols[n == 0 ? 1 : 0];
+    setCat(cat, el) {
+        // this.col = n;
+        // const el = this.cols[n == 0 ? 1 : 0];
         el.className = '';
         this.initEl();
         const art = this.setEl('article');
@@ -304,14 +301,15 @@ export class CustomDOM extends CustomPopup {
      * @param form Les données du formulaire à traiter
      * @param el Elément HTML dans lequel écrire le formulaire
     */
-    setForm(form, el){
+    setForm(f, el){
+        const form = ServiceStore._formulaires.find(fo => fo.alias == f);
         const formEl = this.setEl('form');
         const titre = this.setText('h2', form.titre);
         const descr = this.setHtml('p', form.description);
 
         formEl.appendChild(titre);
         formEl.appendChild(descr);
-        form.champ.forEach( c => {
+        form.champs.forEach( c => {
             formEl.appendChild(this.setInput(c));
         });
 

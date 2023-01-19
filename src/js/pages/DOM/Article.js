@@ -12,14 +12,13 @@ export class CustomArticle extends CustomDOM {
         let article = this.setEl('article');
         let obj = {}; // Objet d'initialisation
         const intro = this.setEl('div');
-
-        if (a.mediaIntro) {
+        if (a.mediaIntro.url) {
             intro.className = 'intro';
             intro.appendChild(this.setFigure(a.mediaIntro));
         };
         if (a.titre) { obj.titre = this.setText('h2', a.titre) };
         if (a.intro) { intro.appendChild(this.setHtml('div', a.intro)); };
-        if (a.mediaContenu) { obj.imageA = this.setFigure(a.mediaContenu) };
+        if (a.mediaContenu.url) { obj.imageA = this.setFigure(a.mediaContenu) };
         if (a.contenu) { obj.contenu = this.setHtml('div', a.contenu) };
         
         obj.intro = intro;
@@ -36,7 +35,7 @@ export class CustomArticle extends CustomDOM {
         this.sendMail(article);
         return article;
     };
-    /** Créer un article ouvert avec une popup (pour les références) (un cartel ave une image) */
+    /** Créer un article ouvert avec une popup (pour les références) (un cartel avec une image) */
     setRef(a) {
         let article = this.setEl('article');
         this.setAttr(article, { name: 'id', value: a.alias });
@@ -88,11 +87,16 @@ export class CustomArticle extends CustomDOM {
     sendMail(html) {
         let as = html.getElementsByTagName('a');
         for(let a of as){
-            if (a.href.indexOf('mailto') != -1) {
-                let b64 = a.href.substring(a.href.indexOf(':')+1);
+            if (a.href.indexOf('mailto') != -1 && a.href.indexOf('@') != -1) {
+                const at = a.href.indexOf('@');
+                let href = a.href.substring(7, at)+'[@]'+a.href.substring(at+1, a.href.length);
+                a.textContent = href;
+                a.setAttribute('data-href', window.btoa(a.href));
                 a.removeAttribute('href');
-                b64 = window.atob(b64);
-                a.addEventListener('click', ()=> window.open(`mailto:${b64}`));
+                a.addEventListener('click', (ev)=> {
+                    ev.preventDefault();
+                    window.open(window.atob(ev.target.dataset.href));
+                });
             }
         };
     }

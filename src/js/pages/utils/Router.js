@@ -15,12 +15,11 @@ export class CustomRouter {
             // const h = path.split('/');
         });
         // Lancé à l'initialisation des menus (Graph)
-        addEventListener('LOAD', ev => this.initRoute());
+        // addEventListener('load', ev => this.initRoute());
         // Initialisé lors d'un chagement de route (pour détecter les historiques)
-        addEventListener('popstate', ev => {
-            this.initRoute();
-            console.log("Changement dans l'historique", ev.state);
-        });
+        addEventListener('popstate', ev => this.initRoute());
+        // Lancer le routage au chargement du site pour afficher la page en cours ou celle d'accueil
+        this.initRoute();
     };
     /** La route lorsqu'on arrive sur la page */
     initRoute() {
@@ -28,26 +27,14 @@ export class CustomRouter {
         // Identifier l'adresse actuelle
         let path = new URL(window.location.href).pathname;
         const h = path.split('/');
+        console.log("Path", path, h);
         let adr = {};
+        let menu;
         ServiceStore._liens.forEach(l => {
-            if(l.url.indexOf(h[1]) != -1){
-                adr = l;
-            }
+            if(path.includes(l.alias)) menu = l;
         });
-        // ServiceStore._menus.principal.forEach(l => {
-        //     if (l.Lien.Url.indexOf(h[1]) != -1) {
-        //         adr = l;
-        //     } else if (l.enfants) {
-        //         // return l.enfants.filter(e => e.Lien.Url.indexOf(h[1]) != -1)[0];
-        //         l.enfants.forEach(e => {
-        //             if (e.Lien.Url.indexOf(h[1]) != -1) {
-        //                 adr = e;
-        //             }
-        //         }
-        //         );
-        //     }
-        // });
-        this.setPage(adr);
+        if(!menu) menu = ServiceStore._liens.find(l => l.alias == 'accueil');
+        this.setPage(menu);
     }
     /** Retrouver la page dans les menus */
     getPage() {
@@ -69,6 +56,7 @@ export class CustomRouter {
                 if (i.alias == menu.template) tmp = i;
             }
         });
+        console.log('set pages', menu, tmp);
         // On instancie une page en fonction du template du menu et on on y injecte le menu
         this.instance = new tmp.classe(menu);
     }
