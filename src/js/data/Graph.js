@@ -132,7 +132,6 @@ export class Graph {
                 // Enregistrer aussi la liste des liens pour le router
                 ServiceStore._formulaires.push(f);
             })
-            console.log('Formulaires', ServiceStore._formulaires);
         })
         .catch(er => {
             console.log(er);

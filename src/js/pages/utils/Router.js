@@ -15,7 +15,6 @@ export class CustomRouter {
             // const h = path.split('/');
         });
         // Lancé à l'initialisation des menus (Graph)
-        // addEventListener('load', ev => this.initRoute());
         // Initialisé lors d'un chagement de route (pour détecter les historiques)
         addEventListener('popstate', ev => this.initRoute());
         // Lancer le routage au chargement du site pour afficher la page en cours ou celle d'accueil
@@ -23,11 +22,9 @@ export class CustomRouter {
     };
     /** La route lorsqu'on arrive sur la page */
     initRoute() {
-        // this.getPage();
         // Identifier l'adresse actuelle
         let path = new URL(window.location.href).pathname;
         const h = path.split('/');
-        console.log("Path", path, h);
         let adr = {};
         let menu;
         ServiceStore._liens.forEach(l => {
@@ -35,15 +32,6 @@ export class CustomRouter {
         });
         if(!menu) menu = ServiceStore._liens.find(l => l.alias == 'accueil');
         this.setPage(menu);
-    }
-    /** Retrouver la page dans les menus */
-    getPage() {
-        // Identifier l'adresse actuelle
-        let path = new URL(window.location.href).pathname;
-        const h = path.split('/');
-        // for (let m in ServiceStore._menus) {
-        //     console.log(m);
-        // }
     }
     /** Créer la page avec les contenus
     * @param {Lien} lien Objet contenant toutes les informations du lien et de la page
@@ -56,7 +44,6 @@ export class CustomRouter {
                 if (i.alias == menu.template) tmp = i;
             }
         });
-        console.log('set pages', menu, tmp);
         // On instancie une page en fonction du template du menu et on on y injecte le menu
         this.instance = new tmp.classe(menu);
     }
