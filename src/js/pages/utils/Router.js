@@ -10,13 +10,17 @@ export class CustomRouter {
     constructor() {
         // Lancé par les menus
         addEventListener('ROUTE', (ev) => {
+            ev.stopImmediatePropagation();
             this.setPage(ev.detail.route);
             // let path = new URL(window.location.href).pathname;
             // const h = path.split('/');
         });
         // Lancé à l'initialisation des menus (Graph)
         // Initialisé lors d'un chagement de route (pour détecter les historiques)
-        addEventListener('popstate', ev => this.initRoute());
+        addEventListener('popstate', ev => {
+            ev.stopImmediatePropagation();
+            this.initRoute();
+        });
         // Lancer le routage au chargement du site pour afficher la page en cours ou celle d'accueil
         this.initRoute();
     };
@@ -28,9 +32,9 @@ export class CustomRouter {
         let adr = {};
         let menu;
         ServiceStore._liens.forEach(l => {
-            if(path.includes(l.alias)) menu = l;
+            if (path.includes(l.alias)) menu = l;
         });
-        if(!menu) menu = ServiceStore._liens.find(l => l.alias == 'accueil');
+        if (!menu) menu = ServiceStore._liens.find(l => l.alias == 'accueil');
         this.setPage(menu);
     }
     /** Créer la page avec les contenus

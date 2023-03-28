@@ -5,6 +5,7 @@ import { CustomPage } from "./DOM/Page";
 export class CustomCategorieMenuDroite extends CustomPage {
     constructor(menu){
         super(menu);
+        console.log("Catégorie menu droite");
         document.getElementById('contenu').className = 'blog-menu-droite';
         this.setCat(this.contenu.categories[0], this.cols[0]);
         
@@ -18,6 +19,7 @@ export class CustomCategorieMenuDroite extends CustomPage {
 export class CustomCategorieMenuGauche extends CustomPage {
     constructor(menu){
         super(menu);
+        console.log("Catégorie menu gauche");
         document.getElementById('contenu').className = 'blog-menu-gauche';
         this.setCat(this.contenu.categories[0], this.cols[1]);
 

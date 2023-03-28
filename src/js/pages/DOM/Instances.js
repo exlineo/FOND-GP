@@ -7,6 +7,7 @@ import { CustomCategorieMenuDroite, CustomCategorieMenuGauche } from '../Categor
 import { CustomCollectionImages, CustomCollectionMixte } from '../Collections';
 import { CustomForm } from '../Formulaire';
 import { CustomAnnuaire } from '../Annuaire';
+import { CustomPageArticle } from '../PageArticle';
 
 /** Tableau de correspondance des instances pour initialiser les templates */
 export const INSTANCES = [
@@ -19,7 +20,11 @@ export const INSTANCES = [
         alias: 'blog',
         classe: CustomBlog,
         instance: null
-    }, {
+    },{
+        alias: 'pageArticle',
+        classe: CustomPageArticle,
+        instance: null
+    },{
         alias: 'blogAlterne',
         classe: CustomBlogAlterne,
         instance: null

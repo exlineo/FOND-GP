@@ -37,12 +37,13 @@ export class CustomDOM extends CustomPopup {
         // this.md.setOption('openLinksInNewWindow', 'true');
         // Afficher des informations lors d'une erreur
         addEventListener('MSG', (ev) => {
+            ev.stopImmediatePropagation();
             // this.setPage(ev.detail.route);
-            if(!document.body.querySelector('#msg')) this.setMsg(ev.detail);
+            if (!document.body.querySelector('#msg')) this.setMsg(ev.detail);
         });
     }
     /** Réinitialiser le contenu des pages pour éviter les doublons */
-    initEl(){
+    initEl() {
         this.cols.forEach(c => c.innerHTML = '');
         this.head.innerHTML = '';
     }
@@ -108,18 +109,18 @@ export class CustomDOM extends CustomPopup {
         return bouton;
     }
     /** Créer un lien */
-    setLien(l){
+    setLien(l) {
         const a = document.createElement('a');
-        l.Description ? a.setAttribute('alt', l.Description) : a.setAttribute('alt', l.Titre);
-        a.setAttribute('title', l.Titre);
-        if(l.Cible) a.target = l.Cible;
-        a.href = l.Url;
+        l.description ? a.setAttribute('alt', l.description) : a.setAttribute('alt', l.titre);
+        a.setAttribute('title', l.titre);
+        if (l.cible) a.target = l.cible;
+        a.href = l.url;
         a.className = 'lien';
-        a.textContent = l.Titre;
+        a.textContent = l.titre;
         return a;
     }
     /** Créer un bouton dans un formulaire */
-    setFormBouton(type, text){
+    setFormBouton(type, text) {
         const btn = document.createElement('input');
         btn.type = type;
         btn.value = text;
@@ -182,21 +183,21 @@ export class CustomDOM extends CustomPopup {
             let a = document.createElement('a');
             a.textContent = m.titre;
             // Eviter des liens sur les menus qui ont des enfants, ça complique l'affichage
-            if(m.enfants.length == 0) {
+            if (m.enfants.length == 0) {
                 a.setAttribute('href', m.url);
                 if (m.cible) a.setAttribute('target', m.cible);
                 a.addEventListener('click', (e) => {
                     e.preventDefault();
+                    e.stopImmediatePropagation();
                     this.setContent(m, smEl);
-                    this.toggleMobile();
                 });
             };
-            
+
             li.appendChild(a);
             ul.appendChild(li);
             // Créer les sous menus
             if (m.enfants) {
-                this.creeMenu(li, m.enfants.sort((a,b) => a.ordre - b.ordre));
+                this.creeMenu(li, m.enfants.sort((a, b) => a.ordre - b.ordre));
             }
         });
         el.appendChild(ul);
@@ -209,6 +210,7 @@ export class CustomDOM extends CustomPopup {
         el.innerHTML = '';
         const nav = document.createElement('nav');
         const div = document.createElement('div');
+
         nav.className = 'sous-menu';
         div.setAttribute('id', 'enchasse');
         el.appendChild(div);
@@ -240,32 +242,43 @@ export class CustomDOM extends CustomPopup {
         } else {
             window.open(m.url, '_blank');
         }
-        // this.enchasse = null;
+        if(m.style && m.style.length > 0 && cibleEl){
+            cibleEl.className = m.style;
+        }
     }
     /** Récupérer le contenu à partir d'un lien de menu */
-    filtreContenu(menu){
+    filtreContenu(menu) {
+        console.log("Flitre contenu", menu);
         let articles = []; // récupérer une liste d'articles à afficher
         let categories = []; // Récupérer la liste des catégories à afficher
+        console.log(ServiceStore._articles);
         // Récupérer les articles du menu s'il y en a
-        if(menu.articles && menu.articles.length > 0) articles = [articles, ...menu.articles].flat();
+        if (menu.articles && menu.articles.length > 0) {
+            menu.articles.forEach(art => {
+                articles = [articles, ...ServiceStore._articles.filter(a => a.alias == art)].flat();
+            });
+            // articles = [articles, ...ServiceStore._articles.filter(a => a.categories.includes(menu.articles[0]))].flat();
+        }
         // Récupérer les articles des catégories s'il y en a
-        if(menu.categories) {
+        if (menu.categories) {
             menu.categories.forEach(cat => {
                 articles = [articles, ...ServiceStore._articles.filter(a => a.categories.includes(cat))].flat();
                 categories = ServiceStore._categories.filter(a => a.alias == cat);
             });
         };
-        return {categories, articles};
+        return { categories, articles };
     }
     /** Renvoyer l'élément HTML pour l'écriture d'un contenu */
-    setCible(cible=null){
-        if(this.enchasse){
+    setCible(cible = null) {
+        if (this.enchasse) {
             // A l'intérieur d'une page
             return this.enchasse;
-        }else if(cible){
+        } else if (cible) {
             // Un endroit spécifique
             return cible;
-        }else{
+        } else {
+            // Ouvrir le menu juste pour le menu principal
+            this.toggleMobile();
             // La colonne gauche ou droite
             return this.cols[this.col];
         }
@@ -296,7 +309,7 @@ export class CustomDOM extends CustomPopup {
 
         el.appendChild(art);
     }
-    setMainCat(cat){
+    setMainCat(cat) {
         this.initEl();
         if (cat.titre) this.head.appendChild(this.setText('h1', cat.titre));
         if (cat.description) this.head.appendChild(this.setHtml('div', cat.description));
@@ -305,7 +318,7 @@ export class CustomDOM extends CustomPopup {
      * @param form Les données du formulaire à traiter
      * @param el Elément HTML dans lequel écrire le formulaire
     */
-    setForm(f, el){
+    setForm(f, el) {
         const form = ServiceStore._formulaires.find(fo => fo.alias == f);
         const formEl = this.setEl('form');
         const titre = this.setText('h2', form.titre);
@@ -313,7 +326,7 @@ export class CustomDOM extends CustomPopup {
 
         formEl.appendChild(titre);
         formEl.appendChild(descr);
-        form.champs.forEach( c => {
+        form.champs.forEach(c => {
             formEl.appendChild(this.setInput(c));
         });
 
@@ -322,13 +335,20 @@ export class CustomDOM extends CustomPopup {
         field.appendChild(this.setFormBouton('reset', 'Annuler'))
         field.appendChild(this.setFormBouton('submit', 'Valider'))
         formEl.appendChild(field);
-        
+
         el.appendChild(formEl);
     }
     /** Définir la mise en page avec un nombre de colonnes */
     setCol() {
         this.cols.push(this.setEl('section'));
         document.getElementById('contenu').appendChild(this.cols[this.cols.length - 1]);
+    }
+    /** Initaliser le contenu des colonnes */
+    initCols() {
+        this.cols.forEach(c => {
+            c.innerHTML = '';
+            c.style.background = '';
+        })
     }
     /** Ajouter un style à une colonne d'article */
     setStyle(style = null) {
@@ -348,7 +368,7 @@ export class CustomDOM extends CustomPopup {
     toggleMobile() {
         if (document.body.clientWidth < 981) {
             this.mobileEl.classList.toggle('ouvert');
-        }else{
+        } else {
             this.mobileEl.classList.remove('ouvert');
         }
     }

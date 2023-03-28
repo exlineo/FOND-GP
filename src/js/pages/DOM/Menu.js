@@ -18,6 +18,7 @@ export class Menu extends CustomDOM {
             this.toggleMobile();
         });
         addEventListener('MENUS', (ev) => {
+            ev.stopImmediatePropagation();
             this.setStructureMenus()
         });
         this.graph = new Graph();

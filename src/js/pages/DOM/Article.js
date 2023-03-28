@@ -12,13 +12,13 @@ export class CustomArticle extends CustomDOM {
         let article = this.setEl('article');
         let obj = {}; // Objet d'initialisation
         const intro = this.setEl('div');
-        if (a.mediaIntro.url) {
+        if (a.mediaIntro && a.mediaIntro.url) {
             intro.className = 'intro';
             intro.appendChild(this.setFigure(a.mediaIntro));
         };
         if (a.titre) { obj.titre = this.setText('h2', a.titre) };
         if (a.intro) { intro.appendChild(this.setHtml('div', a.intro)); };
-        if (a.mediaContenu.url) { obj.imageA = this.setFigure(a.mediaContenu) };
+        if (a.mediaContenu && a.mediaContenu.url) { obj.imageA = this.setFigure(a.mediaContenu) };
         if (a.contenu) { obj.contenu = this.setHtml('div', a.contenu) };
         
         obj.intro = intro;

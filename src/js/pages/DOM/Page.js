@@ -22,6 +22,7 @@ export class CustomPage extends CustomArticle {
     }
     /** Trier les articles */
     triArticles() {
+        console.log("Contenu", this.contenu);
         const alterne = { gauche: [], droite: [] };
         for (let a = 0; a < this.contenu.articles.length; ++a) {
             a % 2 == 0 ? alterne.gauche.push(this.contenu.articles[a]) : alterne.droite.push(this.contenu.articles[a]);

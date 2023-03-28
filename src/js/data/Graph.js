@@ -52,6 +52,7 @@ export class Graph {
                 // Gérer les menus récupérés
                 menus.forEach(m => {
                     const menu = m.data();
+                    console.log(menu);
                     menu.id = m.id;
                     menu.liens = [];
                     // Filtrer les liens pour les attribuer au menu
