@@ -254,6 +254,10 @@ input[type=submit]{
 input[type=reset]{
   background-color: var(--t);
 }
+input[type=submit]:hover,
+input[type=reset]:hover{
+  cursor: pointer;
+}
 #entete, #entete div{
   flex-direction:column;
   width:100%;
@@ -262,13 +266,13 @@ input[type=reset]{
 #entete article{
   width:100%;
 }
-#entete a {
+#entete a, .bouton {
   margin-top:20px;
   padding:8px 16px;
   background-color: var(--q);
   color:var(--clair);
 }
-#entete a:hover {
+#entete a:hover, .bouton:hover {
   transform: scale(1.1);
   background-color: var(--t);
 }
@@ -391,6 +395,7 @@ button{
 }
 button:hover{
   background-color : rgba(0,0,0,.7);
+  cursor: pointer;
 }
 button a{
   text-decoration: none;

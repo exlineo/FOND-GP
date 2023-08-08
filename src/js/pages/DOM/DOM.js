@@ -15,6 +15,7 @@ export class CustomDOM extends CustomPopup {
     msg; // Ecrire un message d'alerte
     enchasse; // Ecrire les contenus dans une div dans la page (pour les sous menus)
     store; // Lien vers le service store
+    formVals = []; // Sauvegarder inputs du formulaire pour récupérer les données saisies
 
     constructor() {
         super();
@@ -242,7 +243,7 @@ export class CustomDOM extends CustomPopup {
         } else {
             window.open(m.url, '_blank');
         }
-        if(m.style && m.style.length > 0 && cibleEl){
+        if (m.style && m.style.length > 0 && cibleEl) {
             cibleEl.className = m.style;
         }
     }
@@ -319,6 +320,7 @@ export class CustomDOM extends CustomPopup {
      * @param el Elément HTML dans lequel écrire le formulaire
     */
     setForm(f, el) {
+        console.log("Set form appelé");
         const form = ServiceStore._formulaires.find(fo => fo.alias == f);
         const formEl = this.setEl('form');
         const titre = this.setText('h2', form.titre);
@@ -327,13 +329,47 @@ export class CustomDOM extends CustomPopup {
         formEl.appendChild(titre);
         formEl.appendChild(descr);
         form.champs.forEach(c => {
-            formEl.appendChild(this.setInput(c));
+            const tmp = this.setInput(c);
+            formEl.appendChild(tmp);
         });
 
         const field = document.createElement('fieldset');
         field.className = 'h c';
-        field.appendChild(this.setFormBouton('reset', 'Annuler'))
-        field.appendChild(this.setFormBouton('submit', 'Valider'))
+        field.appendChild(this.setFormBouton('reset', 'Annuler'));
+        const valide = this.setFormBouton('submit', 'Valider');
+        console.log(valide);
+        // valide.addEventListener('click', async () => {
+        //     try {
+        //         await fetch(form.destination, {
+        //             method: "POST",
+        //             headers: {
+        //                 "Content-Type": "application/json"
+        //             },
+        //             // referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        //             body: JSON.stringify(data), // body data type must match "Content-Type" header
+        //         }).then(data => console.log(data))
+        //     } catch {
+        //     }
+        // });
+
+        
+        field.appendChild(valide);
+        valide.addEventListener('click', async (e) => {
+            e.preventDefault();
+            let contenu = `Bonjour,
+            %0D%0ANous souhaiterions faire ${form.titre},%0D%0AMerci de considérer les informations de présentation ci-dessous :%0D%0A
+            `;
+            console.log(formEl, "Form el");
+            form.champs.forEach(c => {
+                const tmp = formEl.querySelector(`[name="${c.titre}"]`);
+                console.log(tmp, c);
+                contenu += `%09- ${c.titre} : ${tmp.value} ;%0D%0A`;
+            });
+            contenu += `%0D%0A %0D%0A[Merci de joindre les fichiers et liens utiles qui nous permettront de mieux comprendre votre projet]%0D%0A%0D%0A`;
+            console.log(contenu, `mailto:${form.email}?subject=Fonds Gérard Perrier - ${form.titre}&body=${contenu}`);
+            // this.sendForm(form, vals);
+            window.open(`mailto:${form.email}?subject=Fonds Gérard Perrier - ${form.titre}&body=${contenu}`);
+        });
         formEl.appendChild(field);
 
         el.appendChild(formEl);

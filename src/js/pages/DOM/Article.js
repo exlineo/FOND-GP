@@ -83,7 +83,7 @@ export class CustomArticle extends CustomDOM {
         this.sendMail(article);
         return article;
     }
-    /** Envoyer un email en le cachant */
+    /** Envoyer un email en le cachant après un clic dans un article*/
     sendMail(html) {
         let as = html.getElementsByTagName('a');
         for(let a of as){
@@ -99,6 +99,13 @@ export class CustomArticle extends CustomDOM {
                 });
             }
         };
+    }
+    /** Envoyer un formulaire par email */
+    sendForm(form, contenu){
+        const a = document.createElement('a');
+        a.href = `mailto:${form.email}?subject=${form.titre}&body=${contenu}`;
+        // a.onclick
+        a.dispatchEvent();
     }
     
 }
