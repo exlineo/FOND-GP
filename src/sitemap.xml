@@ -1,27 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://www.exlineo.com</loc>
+    <loc>https://archives-en-commun.org/</loc>
   </url>
   <url>
-    <loc>http://www.exlineo.com/#exlineo</loc>
+    <loc>https://archives-en-commun.org/presentation</loc>
   </url>
   <url>
-    <loc>http://www.exlineo.com/#valeurs</loc>
+    <loc>https://archives-en-commun.org/equipes</loc>
   </url>
   <url>
-    <loc>http://www.exlineo.com/#prestations</loc>
+    <loc>https://archives-en-commun.org/missions</loc>
   </url>
   <url>
-    <loc>http://www.exlineo.com/#projets</loc>
+    <loc>https://archives-en-commun.org/interventions</loc>
   </url>
   <url>
-    <loc>http://www.exlineo.com/#references</loc>
+    <loc>https://archives-en-commun.org/formulaire-projets</loc>
   </url>
   <url>
-    <loc>http://www.exlineo.com/#contact</loc>
+    <loc>https://archives-en-commun.org/liste-fonds</loc>
   </url>
   <url>
-    <loc>http://www.exlineo.com/#mentions</loc>
+    <loc>https://archives-en-commun.org/liste-collections</loc>
+  </url>
+  <url>
+    <loc>https://archives-en-commun.org/annuaire</loc>
+  </url>
+  <url>
+    <loc>https://archives-en-commun.org/techniques</loc>
+  </url>
+  <url>
+    <loc>https://archives-en-commun.org/nous-contacter</loc>
+  </url>
+  <url>
+    <loc>https://collections.archives-en-commun.org/</loc>
   </url>
 </urlset>
